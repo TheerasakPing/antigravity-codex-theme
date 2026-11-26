@@ -48,7 +48,7 @@ test('Thai locale dictionary covers every source interface key', () => {
 test('Thai translations preserve interpolation placeholders', () => {
   const source = JSON.parse(fs.readFileSync(path.join(ROOT, 'core/i18n.json'), 'utf8'));
   const thai = JSON.parse(fs.readFileSync(path.join(ROOT, 'core/locales/th-TH.json'), 'utf8'));
-  const placeholders = (value) => (String(value).match(/\\{[a-zA-Z0-9_]+\\}|%[sdif]|\\$\\d+/g) || []).sort();
+  const placeholders = (value) => (String(value).match(/\{[a-zA-Z0-9_]+\}|%[sdif]|\$\d+/g) || []).sort();
   for (const key of Object.keys(source)) {
     assert.deepEqual(placeholders(thai[key]), placeholders(key), `placeholder mismatch for: ${key}`);
   }
