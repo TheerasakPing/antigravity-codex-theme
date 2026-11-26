@@ -21,7 +21,7 @@
       "bytes": 2123
     },
     "daemon/paths.mjs": {
-      "sha256": "8e8d8a4abab4ef40501ae79ef42b47b1aef27289947e884137b74b61d0dd469b",
+      "sha256": "511bd1c8fe7f2421c2439a3cc36f0fe17ed9348102745c9c6cb0561801be4589",
       "bytes": 17905
     },
     "daemon/prompt-suggest.mjs": {
@@ -61,7 +61,7 @@
       "bytes": 12591
     },
     "installer/features.mjs": {
-      "sha256": "e039b9adbcf4cd942935cdd0f64ca21ab626bbfdc47fa78bec9c69e2b4eac5ed",
+      "sha256": "4a2b3d481a30737a2a2dcb5e92fc98be6407ea323ae08d6804085bf47cb5b275",
       "bytes": 6199
     },
     "installer/manifest.mjs": {
@@ -97,15 +97,15 @@
       "bytes": 58328
     },
     "runtime/60-i18n-engine.js": {
-      "sha256": "e624af76d56dec5e6a21842963ee1d721a4309034317e8274f9bd7d3e5e2bda4",
-      "bytes": 45531
+      "sha256": "457b38479ea5746e8c66deb645fd81ed95238d7b49073870e0dd5e5359998647",
+      "bytes": 45673
     },
     "runtime/70-prompt-suggestions.js": {
       "sha256": "ec3967100ca7f28c1e59073e8294f80bc432dc45414469946197a6a3e344e545",
       "bytes": 13183
     },
     "runtime/75-settings-ui.js": {
-      "sha256": "38c6b3c6487cc0e439913a86e8c0b4f80759a9bdd5a59e5b5fe40aa24e2d07b5",
+      "sha256": "ed6857dc307c70dd93146f60d5ae3f1cb12bb5b6f9811473af2c6c6e75792417",
       "bytes": 78634
     },
     "runtime/90-tail.js": {
@@ -141,7 +141,7 @@
       "bytes": 25573
     },
     "locales/th-TH.json": {
-      "sha256": "5cf8ebbd52f9fe6fe68b498e873cdf10cc8184d65fdb93b4d3124aa177c8fa63",
+      "sha256": "94ab88493b9afdda09e0377ec6fbd9784e8ed94554606f49f36d649efd2e3d39",
       "bytes": 13043
     }
   }
