@@ -168,6 +168,10 @@ export function sanitizeConfigPatch(currentCfg, patch) {
   const base = currentCfg && typeof currentCfg === 'object' ? JSON.parse(JSON.stringify(currentCfg)) : {};
   if (!patch || typeof patch !== 'object') return base;
 
+  if (['en', 'zh-CN', 'th-TH'].includes(patch.locale)) {
+    base.locale = patch.locale;
+  }
+
   if (patch.modules && typeof patch.modules === 'object') {
     const nextModules = base.modules && typeof base.modules === 'object' ? { ...base.modules } : {};
     for (const [k, v] of Object.entries(patch.modules)) {
@@ -213,6 +217,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
   let activeConfig = {
     enabled: true,
     channel: 'auto',
+    locale: 'zh-CN',
     preset: 'codex-pure-white',
     telemetryLayout: 'compact',
     telemetryCacheMode: 'session',
@@ -347,6 +352,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
         ', .monaco-editor, .monaco-diff-editor, .xterm, [data-markdown-root], [data-testid="user-message-content"], .agy-user-bubble, [class*="onyx-key"]';
     }
 
+    const locale = ['en', 'zh-CN', 'th-TH'].includes(userCfg.locale) ? userCfg.locale : 'zh-CN';
     const rawPromptModel = typeof userCfg.promptSuggestionModel === 'string' ? userCfg.promptSuggestionModel.trim() : '';
     const promptSuggestionModel =
       rawPromptModel && !rawPromptModel.startsWith('-') && /^[a-zA-Z0-9._:/-]+$/.test(rawPromptModel)
@@ -356,6 +362,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
     activeConfig = {
       enabled,
       channel,
+      locale,
       preset,
       telemetryLayout,
       telemetryCacheMode,
@@ -380,9 +387,12 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
     });
     const baseCss = activeStyleFiles.map((f) => readTextSafe(f, '')).join('\n\n');
     const customCss = !safeMode && modules.customCss ? readTextSafe(path.join(USER_DIR, 'custom.css'), '') : '';
-    const baseDict = modules.i18n ? readJsonSafe(path.join(CORE_DIR, 'i18n.json'), {}) : {};
-    const rawOverrideDict =
-      modules.i18n && !safeMode ? readJsonSafe(path.join(USER_DIR, 'i18n.override.json'), {}) : {};
+    const localeDictPath = locale === 'th-TH' ? path.join(CORE_DIR, 'locales', 'th-TH.json') : path.join(CORE_DIR, 'i18n.json');
+    const baseDict = modules.i18n && locale !== 'en' ? readJsonSafe(localeDictPath, {}) : {};
+    const localeOverrideName = locale === 'th-TH' ? 'i18n.th-TH.override.json' : 'i18n.override.json';
+    const rawOverrideDict = modules.i18n && !safeMode && locale !== 'en'
+      ? readJsonSafe(path.join(USER_DIR, localeOverrideName), {})
+      : {};
     const mergedDict = modules.i18n ? Object.assign({}, baseDict, normalizeOverrideDict(rawOverrideDict)) : {};
     const customJs = !safeMode && modules.customJs ? readTextSafe(path.join(USER_DIR, 'custom.js'), '') : '';
     const runtimeTemplate = runtimeFiles.map((f) => readTextSafe(f, '')).join('\n');
@@ -401,6 +411,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
           telemetryLayout,
           telemetryCacheMode,
           promptSuggestionModel,
+          locale,
           sshHosts: activeConfig.sshHosts,
           modules,
           themeVars,
@@ -420,6 +431,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
       preset,
       telemetryLayout,
       telemetryCacheMode,
+      locale,
       cssText: baseCss,
       customCss,
       themeVars,
@@ -432,6 +444,7 @@ export function createBundleController({ safeMode = false, cliChannel = null, ha
         preset,
         telemetryLayout,
         telemetryCacheMode,
+        locale,
         contextLimit,
         promptSuggestionModel,
         sshHosts: activeConfig.sshHosts,
