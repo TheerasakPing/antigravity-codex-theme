@@ -45,10 +45,11 @@ export const FEATURE_GROUPS = Object.freeze({
   },
   i18n: {
     id: 'i18n',
-    label: '中文界面本地化 (900+ 词条)',
+    label: '多语言界面本地化 (English / 简体中文 / ไทย)',
     configKeys: ['i18n'],
     sparsePaths: [
       '/core/i18n.json',
+      '/core/locales',
       '/core/runtime/60-i18n-engine.js',
       '/user/i18n.override.json'
     ],
@@ -56,7 +57,7 @@ export const FEATURE_GROUPS = Object.freeze({
       'i18n.json',
       'runtime/60-i18n-engine.js'
     ],
-    aliases: ['i18n', 'zh', 'cn', 'chinese', 'locale', 'l10n', 'translate']
+    aliases: ['i18n', 'zh', 'cn', 'chinese', 'th', 'thai', 'locale', 'l10n', 'translate']
   },
   metrics: {
     id: 'metrics',
