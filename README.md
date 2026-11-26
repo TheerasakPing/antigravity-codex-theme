@@ -111,7 +111,7 @@ git clone --depth=1 --filter=blob:none --sparse https://github.com/nkjDSLcvanv/a
 cd antigravity-codex-theme
 git sparse-checkout set --no-cone \
   /install.mjs /package.json /SKILL.md /LICENSE \
-  /user/config.json /user/custom.css /user/custom.js /user/i18n.override.json \
+  /user/config.json /user/custom.css /user/custom.js /user/i18n.override.json /user/i18n.th-TH.override.json \
   /core/daemon.mjs /core/shared.mjs /core/manifest.json /core/installer \
   /core/daemon/paths.mjs /core/daemon/cdp-bridge.mjs /core/daemon/cdp-relaunch.mjs /core/daemon/updater.mjs \
   /core/styles/45-settings-ui.css /core/runtime/00-head.js /core/runtime/75-settings-ui.js /core/runtime/90-tail.js \
