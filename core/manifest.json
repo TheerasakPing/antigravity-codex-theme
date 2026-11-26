@@ -61,8 +61,8 @@
       "bytes": 12591
     },
     "installer/features.mjs": {
-      "sha256": "4a2b3d481a30737a2a2dcb5e92fc98be6407ea323ae08d6804085bf47cb5b275",
-      "bytes": 6199
+      "sha256": "fa3aaa8cc807352ed6b345b00e7074e3ddde4617ddacd1ea7e5c316de08eb6fb",
+      "bytes": 6227
     },
     "installer/manifest.mjs": {
       "sha256": "4001613efc367581f47aa39e7080f39466810a38aff58c373eb654e54da5a651",
@@ -105,8 +105,8 @@
       "bytes": 13183
     },
     "runtime/75-settings-ui.js": {
-      "sha256": "ed6857dc307c70dd93146f60d5ae3f1cb12bb5b6f9811473af2c6c6e75792417",
-      "bytes": 78634
+      "sha256": "a5fef819168a45bfbf9bf9d8d523c2b5ef49e29bdb474c3ce3bff3a3b07ce8da",
+      "bytes": 78839
     },
     "runtime/90-tail.js": {
       "sha256": "f042c5b79dc1011c2c001445085ab56d0e4232198093691c3809bd8da90644a1",
