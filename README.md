@@ -208,7 +208,7 @@ node install.mjs install --only i18n --minimal
 
 ### 多语言界面本地化
 
-在 **设置 → Codex 主题 → Interface language** 中选择 **English / 简体中文 / ไทย**。简体中文继续使用原有完整词典；泰语使用独立的 `core/locales/th-TH.json` 词典，未覆盖的词条会保留英文，不会错误回退成中文。泰语翻译以自然表达为主，并保留 Agent、Workspace、Context、Token、Prompt、MCP、API、Terminal、IDE、CLI、Plugin 与 Skills 等常见开发术语。可通过 `user/i18n.th-TH.override.json` 自定义泰语词条。
+在 **设置 → Codex 主题 → Interface language** 中选择 **English / 简体中文 / ไทย**。简体中文继续使用原有完整词典；泰语使用独立的 `core/locales/th-TH.json` 词典，已覆盖原始界面词典中的全部 1,937 个词条，并为动态配额、时间、任务状态及无障碍标签提供泰语格式化。泰语翻译以自然表达为主，并保留 Agent、Workspace、Context、Token、Prompt、MCP、API、Terminal、IDE、CLI、Plugin 与 Skills 等常见开发术语。可通过 `user/i18n.th-TH.override.json` 自定义泰语词条。
 
 简体中文内置 `1,900+` 条词条，覆盖 Antigravity `2.30.x` ~ `2.35.1+` 的设置面板（含 Orchestrator 设置、输入框发送快捷键与沙箱权限）、菜单、权限选项、侧边栏、旁路提问、插件管理、工具审批状态，以及**模型额度耗尽与 AI 点数不足的动态时间/点数拼接提示**（自动保留英文模型名与思考档位）。采用 `WeakMap` 原地更新文本节点，不破坏 React 绑定；可通过 [user/i18n.override.json](user/i18n.override.json) 覆盖词条，或在设置面板一键关闭恢复英文。
 
@@ -308,7 +308,7 @@ antigravity-codex-theme/
 
 ## English Overview
 
-`antigravity-codex-theme` brings Codex light and dark themes, Chinese UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
+`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
 
 - **Codex Light & Dark Themes**: Pure white (`codex-pure-white`) and charcoal dark (`codex-dark`) palettes with zero external font dependencies and automatic light/dark switching.
 - **Embedded Settings Panel & Self-Updater**: Mounts directly under **Settings → Codex Theme** to toggle modules, select prompt-suggestion models & thinking effort tiers via a 2-level `agy models` cascading menu, edit `sshHosts`, trigger manual hot-reloads, and check/apply in-panel updates (`node install.mjs update`) with integrity verification and automatic `core.prev/` rollback backups while preserving `user/`.
