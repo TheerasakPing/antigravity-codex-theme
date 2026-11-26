@@ -775,7 +775,10 @@
 
     function resolveAttrTranslation(atrim, el) {
       const directHit = lookupRawDict(atrim);
-      if (typeof directHit === 'string') return resolveContextualDictTranslation(atrim, el, directHit);
+      if (typeof directHit === 'string') {
+        return boot.locale === 'zh-CN' ? resolveContextualDictTranslation(atrim, el, directHit) : directHit;
+      }
+      if (boot.locale !== 'zh-CN') return computeTextTranslation(atrim, el) || atrim;
       const mModel = atrim.match(RE_ARIA_MODEL);
       if (mModel) {
         let mName = mModel[1].trim();
