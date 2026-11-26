@@ -9,8 +9,8 @@
       "bytes": 5269
     },
     "daemon/cdp-bridge.mjs": {
-      "sha256": "66f46ca47abff656e4b82ba19c41bd9f829f0eac762e0f19f9842e0b101125c5",
-      "bytes": 51461
+      "sha256": "892341ae296a0491a1eb4a6f385810481a5a0761e50eee9f8d72bd9136333fde",
+      "bytes": 51581
     },
     "daemon/cdp-relaunch.mjs": {
       "sha256": "a26fbdc61ea7ec95871e1d7ce1b25b78c3ecfcdbcc677cadbd3d59108897d8e3",
