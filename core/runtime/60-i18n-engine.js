@@ -926,6 +926,63 @@
       if (typeof directHit === 'string') {
         return boot.locale === 'zh-CN' ? resolveContextualDictTranslation(atrim, el, directHit) : directHit;
       }
+      if (boot.locale === 'th-TH') {
+        const mModelTh = atrim.match(RE_ARIA_MODEL);
+        if (mModelTh) {
+          let name = mModelTh[1].trim();
+          let note = '';
+          const comma = name.indexOf(', ');
+          if (comma > 0) {
+            const noteRaw = name.slice(comma + 2).trim();
+            const noteHit = lookupRawDict(noteRaw);
+            if (typeof noteHit === 'string') {
+              name = name.slice(0, comma).trim();
+              note = ' (' + noteHit + ')';
+            }
+          }
+          return (name === 'Select model' ? 'เลือกโมเดล' : 'โมเดล ' + name) + note;
+        }
+        const lookupPermTh = (value) => {
+          if (!value) return value;
+          if (value.toLowerCase() === 'default') return 'ค่าเริ่มต้น (Default)';
+          return lookupRawDict(value) || DICT[value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()] || value;
+        };
+        const mPermSelTh = atrim.match(RE_ARIA_PERM_SEL);
+        if (mPermSelTh) return 'โหมดสิทธิ์ปัจจุบัน: ' + lookupPermTh(mPermSelTh[1].trim());
+        const mPermFixedTh = atrim.match(RE_ARIA_PERM_FIXED);
+        if (mPermFixedTh) {
+          const mode = lookupPermTh(mPermFixedTh[1].trim());
+          const note = (mPermFixedTh[2] || mPermFixedTh[3] || '').trim();
+          return 'โหมดสิทธิ์: ' + mode + (note ? ' (' + (note.toLowerCase() === 'cannot be changed mid-conversation' ? 'เปลี่ยนระหว่างการสนทนาไม่ได้' : lookupRawDict(note) || computeTextTranslation(note, el) || note) + ')' : '');
+        }
+        const mTurnTh = atrim.match(RE_ARIA_TURN);
+        if (mTurnTh) {
+          if (mTurnTh[3] && mTurnTh[4]) return 'รอบการสนทนา ' + mTurnTh[3] + ' จาก ' + mTurnTh[4];
+          const role = mTurnTh[2].toLowerCase() === 'user' ? 'ผู้ใช้' : 'Agent';
+          return 'รอบการสนทนาที่ ' + mTurnTh[1] + ' โดย ' + role;
+        }
+        const mOlderTh = atrim.match(RE_ARIA_LOAD_OLDER);
+        if (mOlderTh) {
+          if (mOlderTh[2] && mOlderTh[3]) return 'โหลดข้อความก่อนหน้า (กำลังแสดง ' + mOlderTh[2] + ' จาก ' + mOlderTh[3] + ')';
+          return 'โหลด ' + mOlderTh[1] + ' รอบการสนทนาก่อนหน้า';
+        }
+        const mBranchTh = atrim.match(RE_ARIA_BRANCH);
+        if (mBranchTh) return 'Branch ปัจจุบัน: ' + (mBranchTh[1].trim() === 'Select branch' ? 'เลือก Branch' : mBranchTh[1].trim());
+        const mProjectTh = atrim.match(RE_ARIA_PROJECT);
+        if (mProjectTh) {
+          const name = mProjectTh[1].trim();
+          return 'โปรเจกต์: ' + (name === 'No project' || name === 'No Project' ? 'ไม่ได้เชื่อมกับโปรเจกต์' : name);
+        }
+        const mLocationTh = atrim.match(RE_ARIA_LOCATION);
+        if (mLocationTh) {
+          const value = mLocationTh[1].trim();
+          const mapped = value.toLowerCase() === 'this computer' ? 'เครื่องนี้' : value.toLowerCase() === 'remote' ? 'Remote' : lookupRawDict(value) || value;
+          return 'ตำแหน่งที่ Agent ทำงาน: ' + mapped;
+        }
+        const mVersionTh = atrim.match(RE_ARIA_VERSION);
+        if (mVersionTh) return 'เวอร์ชัน ' + mVersionTh[1].trim();
+        return computeTextTranslation(atrim, el) || atrim;
+      }
       if (boot.locale !== 'zh-CN') return computeTextTranslation(atrim, el) || atrim;
       const mModel = atrim.match(RE_ARIA_MODEL);
       if (mModel) {
