@@ -91,6 +91,11 @@ function getTargetOriginKey(urlStr) {
   }
 }
 
+export function buildMetricsSessionKey({ cascadeId, rawDbSig, locale, manualContextLimit = 0, fallbackContextLimit = 256000, telemetryLayout = 'compact', telemetryCacheMode = 'session', lsSig = '' }) {
+  const normalizedLocale = ['en', 'zh-CN', 'th-TH'].includes(locale) ? locale : 'zh-CN';
+  return `${cascadeId}@${rawDbSig}|locale:${normalizedLocale}|lim:${manualContextLimit || 0}:${fallbackContextLimit || 256000}|ly:${telemetryLayout}:${telemetryCacheMode}${lsSig ? `|ls:${lsSig}` : ''}`;
+}
+
 export const SKIPPED_TARGET_BACKOFF_MS = Object.freeze([4000, 10000, 25000]);
 export const SKIPPED_TARGET_MAX_RETRIES = SKIPPED_TARGET_BACKOFF_MS.length;
 
@@ -605,7 +610,16 @@ export function createCdpManager({
             rawSig = rawSig || 'empty';
             const isRemote = Boolean(remoteSource?.sig && typeof remoteSource.openDb === 'function');
             const lsSig = prev.pendingActive && !isRemote ? getLsLogSig(endpoint.lsLogFile) : '';
-            const sessionKey = `${cid}@${rawSig}|lim:${activeConfig.manualContextLimit || 0}:${activeConfig.fallbackContextLimit || 256000}|ly:${activeConfig.telemetryLayout}:${activeConfig.telemetryCacheMode}${lsSig ? `|ls:${lsSig}` : ''}`;
+            const sessionKey = buildMetricsSessionKey({
+              cascadeId: cid,
+              rawDbSig: rawSig,
+              locale: activeConfig.locale,
+              manualContextLimit: activeConfig.manualContextLimit,
+              fallbackContextLimit: activeConfig.fallbackContextLimit,
+              telemetryLayout: activeConfig.telemetryLayout,
+              telemetryCacheMode: activeConfig.telemetryCacheMode,
+              lsSig
+            });
             if (!force && sessionKey === prev.hash) continue;
 
             const payload = metricsReader.parseConversationMetrics(

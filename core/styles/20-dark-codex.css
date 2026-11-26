@@ -163,3 +163,32 @@ body[data-agy-theme][data-newux-theme="onyx"].dark .surface-composer > .surface-
   padding: 0.12em 0.36em;
   color: #EAEAEA !important;
 }
+
+/* Chat markdown callouts: matching accent text/border with a restrained tinted surface */
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) {
+  --ag-chat-callout-accent: #8AB8FF;
+  --ag-chat-callout-bg: rgba(83, 145, 235, 0.13);
+  --ag-chat-mark-bg: rgba(83, 145, 235, 0.22);
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) :is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) blockquote {
+  color: var(--ag-chat-callout-accent) !important;
+  background: var(--ag-chat-callout-bg) !important;
+  border-inline-start: 3px solid var(--ag-chat-callout-accent) !important;
+  border-radius: 0 8px 8px 0 !important;
+  margin: 0.85em 0 !important;
+  padding: 0.65em 0.9em !important;
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) :is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) blockquote :is(p, li, strong, b, em, a) {
+  color: inherit !important;
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) :is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) mark {
+  color: var(--ag-chat-callout-accent) !important;
+  background: var(--ag-chat-mark-bg) !important;
+  border-radius: 3px;
+  padding: 0.06em 0.22em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

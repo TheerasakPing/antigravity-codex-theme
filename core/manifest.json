@@ -5,8 +5,8 @@
   "fullMetricsNodeVersion": "22.13.0",
   "files": {
     "daemon/cdp-bridge.mjs": {
-      "sha256": "892341ae296a0491a1eb4a6f385810481a5a0761e50eee9f8d72bd9136333fde",
-      "bytes": 51581
+      "sha256": "a771d1f66939113560b0d6cc72664903da4dfc40dcb6135021b4bc222506e6b0",
+      "bytes": 52299
     },
     "daemon/cdp-relaunch.mjs": {
       "sha256": "a26fbdc61ea7ec95871e1d7ce1b25b78c3ecfcdbcc677cadbd3d59108897d8e3",
@@ -125,12 +125,12 @@
       "bytes": 15209
     },
     "styles/10-light-codex.css": {
-      "sha256": "9ba3160b6f9958d56e64e321fbf363327adadcd8f61c4d9b5c71482c385c416c",
-      "bytes": 4066
+      "sha256": "7fa4fce7982ea82f1e7ea829c8240419c1272e682c6acfeb28465b5156991a79",
+      "bytes": 5199
     },
     "styles/20-dark-codex.css": {
-      "sha256": "e8a38dfdd97a0329d15cbf7580f288cc24868d3a7bb99108e9b791dfc4300693",
-      "bytes": 7466
+      "sha256": "c6c89e05bff21eff40f714f4edfaec22092f9a076fa25764316b6e177db9e74a",
+      "bytes": 8872
     },
     "styles/30-telemetry.css": {
       "sha256": "6361574607dcf6f8bd609bf8b83e66c674a14841bc0fc6d07b68d3c2e79da2a4",

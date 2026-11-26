@@ -64,6 +64,12 @@ test('Assembled runtime JS and CSS parts pass syntax validation and define Codex
   assert.ok(css.includes('#181818'));
   assert.ok(css.includes('#363636'));
   assert.ok(css.includes('.ag-dot-slow'));
+  const lightCallout = fs.readFileSync(path.join(stylesDir, '10-light-codex.css'), 'utf8');
+  const darkCallout = fs.readFileSync(path.join(stylesDir, '20-dark-codex.css'), 'utf8');
+  for (const [label, source] of [['light', lightCallout], ['dark', darkCallout]]) {
+    assert.match(source, /blockquote\s*\{[^}]*color:\s*var\(--ag-chat-callout-accent\)[^}]*background:\s*var\(--ag-chat-callout-bg\)[^}]*border-inline-start:\s*3px solid var\(--ag-chat-callout-accent\)/s, `${label} chat callouts must pair accent text/border with a tinted background`);
+    assert.match(source, /\bmark\s*\{[^}]*color:\s*var\(--ag-chat-callout-accent\)[^}]*background:\s*var\(--ag-chat-mark-bg\)/s, `${label} inline highlights must use the matching accent and tint`);
+  }
   assert.ok(
     /\[data-testid="cascade-system-message-toolbar"\]\s*>\s*div:last-child[\s\S]*?justify-content:\s*flex-end/i.test(css),
     'Turn toolbar action buttons must stay right-aligned'

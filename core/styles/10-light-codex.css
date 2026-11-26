@@ -92,3 +92,32 @@ html:not([data-ag-theme-mode="dark"]) body:not(.dark):not(.theme-dark) #antigrav
   background-color: rgba(0, 0, 0, 0.12) !important;
   color: #0D0D0D !important;
 }
+
+/* Chat markdown callouts: matching accent text/border with a restrained tinted surface */
+:root {
+  --ag-chat-callout-accent: #1D5FBF;
+  --ag-chat-callout-bg: rgba(43, 127, 255, 0.075);
+  --ag-chat-mark-bg: rgba(43, 127, 255, 0.14);
+}
+
+:is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) blockquote {
+  color: var(--ag-chat-callout-accent) !important;
+  background: var(--ag-chat-callout-bg) !important;
+  border-inline-start: 3px solid var(--ag-chat-callout-accent) !important;
+  border-radius: 0 8px 8px 0 !important;
+  margin: 0.85em 0 !important;
+  padding: 0.65em 0.9em !important;
+}
+
+:is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) blockquote :is(p, li, strong, b, em, a) {
+  color: inherit !important;
+}
+
+:is([data-markdown-root], [data-testid="user-message-content"], .select-text, .prose, .markdown) mark {
+  color: var(--ag-chat-callout-accent) !important;
+  background: var(--ag-chat-mark-bg) !important;
+  border-radius: 3px;
+  padding: 0.06em 0.22em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
