@@ -461,7 +461,9 @@
       if (!trimmed) return null;
 
       // 1. 无原型静态词典 O(1) 精确匹配（多词附 Sentence/Title Case 大小写回退）+ 上下文消歧（附句尾句号自动回退；函数式 replace 防止 $&/$1 二次展开）
-      let replacement = resolveContextualDictTranslation(trimmed, contextEl, lookupRawDict(trimmed));
+      let replacement = boot.locale === 'zh-CN'
+        ? resolveContextualDictTranslation(trimmed, contextEl, lookupRawDict(trimmed))
+        : lookupRawDict(trimmed);
       if (typeof replacement !== 'string' && trimmed.endsWith('.')) {
         const withoutDot = lookupRawDict(trimmed.slice(0, -1));
         if (typeof withoutDot === 'string') {
@@ -474,6 +476,195 @@
         }
         return raw.replace(trimmed, () => replacement);
       }
+
+      // Locale-specific dynamic phrases. Never run the Chinese-only formatter for Thai or English.
+      if (boot.locale === 'th-TH') {
+        const replace = (value) => raw.replace(trimmed, () => value);
+        const formatDuration = (value) => {
+          const v = String(value || '').trim();
+          if (v === '<1m' || v === '< 1m') return 'ไม่ถึง 1 นาที';
+          return v
+            .replace(/(\d+)\s*days?\b/gi, '$1 วัน')
+            .replace(/(\d+)\s*hours?\b/gi, '$1 ชั่วโมง')
+            .replace(/(\d+)\s*minutes?\b/gi, '$1 นาที')
+            .replace(/(\d+)\s*seconds?\b/gi, '$1 วินาที')
+            .replace(/(\d+)\s*d\b/gi, '$1 วัน')
+            .replace(/(\d+)\s*h\b/gi, '$1 ชั่วโมง')
+            .replace(/(\d+)\s*m\b/gi, '$1 นาที')
+            .replace(/(\d+)\s*s\b/gi, '$1 วินาที')
+            .replace(/\s+/g, ' ')
+            .trim();
+        };
+        const quotaModel = (value) => !value || /^this model$/i.test(value.trim()) ? 'โมเดลนี้' : value.trim();
+        const translateQuota = (value) => {
+          let q = value.match(RE_QUOTA_RESET_SWITCH);
+          if (q) return 'โควตาของ ' + quotaModel(q[1]) + ' จะรีเซ็ตในวันที่ ' + q[2].trim() + ' โปรดเปลี่ยนไปใช้โมเดลอื่นที่ยังใช้งานได้';
+          q = value.match(RE_QUOTA_REACHED_SWITCH);
+          if (q) return 'โควตาของ ' + quotaModel(q[1]) + ' หมดแล้ว โปรดเปลี่ยนไปใช้โมเดลอื่นที่ยังใช้งานได้';
+          let rest = value;
+          const parts = [];
+          q = rest.match(RE_QUOTA_NEED_CREDITS);
+          if (q) {
+            parts.push('ต้องมี AI Credits ' + (q[1] ? 'อย่างน้อย ' + q[1] + ' เครดิต' : 'เพิ่มเติม') + ' จึงจะส่งข้อความได้ หากต้องการใช้ ' + quotaModel(q[2]) + ' ต่อทันที โปรดซื้อ AI Credits เพิ่ม');
+            rest = rest.slice(q[0].length);
+          }
+          q = rest.match(RE_QUOTA_BASELINE_REFRESH);
+          if (q) {
+            parts.push('โควตาพื้นฐานของแพ็กเกจจะรีเซ็ตในวันที่ ' + q[1].trim());
+            rest = rest.slice(q[0].length);
+          }
+          q = rest.match(RE_QUOTA_ENABLE_OVERAGES);
+          if (q) {
+            parts.push('หากต้องการใช้ ' + quotaModel(q[1]) + ' ต่อทันที โปรดเปิดใช้การคิด AI Credits เมื่อเกินโควตา');
+            rest = rest.slice(q[0].length);
+          }
+          rest = rest.trim();
+          if (rest) {
+            const upgrade = rest.match(RE_QUOTA_UPGRADE_PLAN);
+            if (upgrade) {
+              parts.push('คุณสามารถอัปเกรดเป็นแพ็กเกจ Google AI ' + upgrade[2] + ' เพื่อรับขีดจำกัดการใช้งาน' + (upgrade[3].toLowerCase() === 'the highest' ? 'สูงสุด' : 'ที่สูงขึ้น'));
+            } else {
+              const hit = lookupRawDict(rest) || (rest.endsWith('.') ? lookupRawDict(rest.slice(0, -1)) : null);
+              if (hit) parts.push(hit);
+            }
+          }
+          return parts.length ? parts.join(' ') : null;
+        };
+
+        let m = trimmed.match(RE_PCT_LEFT);
+        if (m) return replace(m[1] + '% เหลืออยู่');
+        m = trimmed.match(RE_WINDOW_LIMIT_COMBINED);
+        if (m) {
+          const unit = { s: 'วินาที', m: 'นาที', h: 'ชั่วโมง', d: 'วัน' }[m[2].toLowerCase()] || m[2];
+          return replace('โควตา ' + m[1] + ' ' + unit + ' จะรีเซ็ตในอีก ' + formatDuration(m[3]));
+        }
+        m = trimmed.match(RE_WINDOW_LIMIT);
+        if (m) {
+          const unit = { s: 'วินาที', m: 'นาที', h: 'ชั่วโมง', d: 'วัน' }[m[2].toLowerCase()] || m[2];
+          return replace('โควตา ' + m[1] + ' ' + unit);
+        }
+        m = trimmed.match(RE_NAMED_LIMIT_RESETS);
+        if (m) {
+          const period = { weekly: 'รายสัปดาห์', daily: 'รายวัน', monthly: 'รายเดือน' }[m[1].toLowerCase()] || m[1];
+          return replace('โควตา' + period + ' จะรีเซ็ตในอีก ' + formatDuration(m[2]));
+        }
+        m = trimmed.match(RE_MODEL_NAMED_LIMIT);
+        if (m) {
+          const period = { weekly: 'รายสัปดาห์', daily: 'รายวัน', monthly: 'รายเดือน' }[m[2].toLowerCase()] || m[2];
+          return replace('โควตา ' + m[1].trim() + ' ' + period);
+        }
+        m = trimmed.match(RE_RESETS_IN);
+        if (m) return replace('รีเซ็ตในอีก ' + formatDuration(m[1]));
+        m = trimmed.match(RE_REL_TIME);
+        if (m) {
+          const units = { s: 'วินาที', sec: 'วินาที', secs: 'วินาที', m: 'นาที', min: 'นาที', mins: 'นาที', h: 'ชั่วโมง', hr: 'ชั่วโมง', hrs: 'ชั่วโมง', d: 'วัน', w: 'สัปดาห์', mo: 'เดือน', y: 'ปี', yr: 'ปี', yrs: 'ปี' };
+          return replace(m[1] + ' ' + (units[m[2].toLowerCase()] || m[2]) + 'ที่แล้ว');
+        }
+        m = trimmed.match(RE_FILES_CHANGED);
+        if (m) return replace('เปลี่ยนแปลง ' + m[1] + ' ไฟล์');
+        m = trimmed.match(RE_TOOLS);
+        if (m) return replace(m[1] + ' เครื่องมือ');
+        m = trimmed.match(RE_DEMOTED);
+        if (m) return replace('ลดระดับแล้ว ' + m[1] + ' รายการ');
+        m = trimmed.match(RE_EXCLUDED);
+        if (m) return replace('ไม่นำมาใช้ ' + m[1] + ' รายการ');
+        m = trimmed.match(RE_TOOLS_EXCLUDED);
+        if (m) return replace('ไม่นำเครื่องมือมาใช้ ' + m[1] + ' รายการ');
+        m = trimmed.match(RE_UPDATES_COUNT);
+        if (m) return replace(m[1] + ' รายการอัปเดต');
+        m = trimmed.match(RE_PROJECTS_COUNT);
+        if (m) return replace(m[1] + ' โปรเจกต์');
+        m = trimmed.match(RE_ACTIVE_CONVS);
+        if (m) return replace(m[1] + ' แชตที่กำลังใช้งาน');
+        m = trimmed.match(RE_CALLS_MB);
+        if (m) return replace(m[1] + ' การโทร · ' + m[2]);
+        m = trimmed.match(RE_SEE_ALL);
+        if (m) return replace('ดูทั้งหมด (' + m[1] + ')');
+        m = trimmed.match(RE_SHOW_BREAKDOWNS);
+        if (m) return replace('แสดงรายละเอียด ' + m[1] + ' รายการ');
+        m = trimmed.match(RE_SHOW_MORE_SUBAGENTS);
+        if (m) return replace('แสดง Subagents เพิ่มอีก ' + m[1] + ' ราย');
+        m = trimmed.match(RE_PERM_DELETE);
+        if (m) return replace('ลบ ' + m[1] + ' อย่างถาวร รวมถึงการสนทนาที่กำลังดำเนินอยู่ ' + m[2] + ' รายการ');
+        m = trimmed.match(RE_WORKED_FOR_UPDATES);
+        if (m) return replace('ทำงานมาแล้ว ' + formatDuration(m[1]) + ' · ' + m[2] + ' รายการอัปเดต');
+        m = trimmed.match(RE_WORKED_FOR);
+        if (m) return replace('ทำงานมาแล้ว ' + formatDuration(m[1]));
+        m = trimmed.match(RE_THOUGHT_FOR);
+        if (m) return replace('ใช้เวลาคิด ' + formatDuration(m[1]));
+        m = trimmed.match(RE_THINKING_FOR);
+        if (m) return replace('กำลังคิดมาแล้ว ' + formatDuration(m[1]));
+        m = trimmed.match(RE_RUNNING_FOR);
+        if (m) return replace('ทำงานมาแล้ว ' + formatDuration(m[1]));
+        if (RE_EPHEMERAL_SUMMARY.test(trimmed)) {
+          const translated = trimmed.split(/,\\s*/).map((part) => {
+            const low = part.trim().toLowerCase();
+            const count = low.match(RE_EPHEMERAL_COUNT_CLAUSE);
+            if (count) {
+              const verb = { explored: 'ตรวจดูแล้ว', edited: 'แก้ไขแล้ว', ran: 'รันแล้ว' }[count[1]];
+              const noun = { file: 'ไฟล์', files: 'ไฟล์', artifact: 'Artifact', artifacts: 'Artifacts', command: 'คำสั่ง', commands: 'คำสั่ง' }[count[3]];
+              return verb + ' ' + count[2] + ' ' + noun;
+            }
+            const fixed = {
+              explored: 'ตรวจดูแล้ว', 'explored file': 'ตรวจดูไฟล์แล้ว', 'explored files': 'ตรวจดูไฟล์แล้ว',
+              'explored artifact': 'ตรวจดู Artifact แล้ว', 'explored artifacts': 'ตรวจดู Artifacts แล้ว',
+              'ran command': 'รันคำสั่งแล้ว', 'ran commands': 'รันคำสั่งแล้ว',
+              edited: 'แก้ไขแล้ว', 'edited file': 'แก้ไขไฟล์แล้ว', 'edited files': 'แก้ไขไฟล์แล้ว',
+              'edited artifact': 'แก้ไข Artifact แล้ว', 'edited artifacts': 'แก้ไข Artifacts แล้ว'
+            };
+            return fixed[low] || part.trim();
+          }).join(' · ');
+          return replace(translated);
+        }
+        if (!isInHeaderOrBreadcrumb(contextEl)) {
+          m = trimmed.match(RE_EPHEMERAL_ACTIVE);
+          if (m) {
+            const noun = m[2].toLowerCase();
+            const verb = { Editing: 'กำลังแก้ไข', Reading: 'กำลังอ่าน', Listing: 'กำลังแสดงรายการ', Searching: 'กำลังค้นหา' }[m[1]];
+            const nounTh = { file: 'ไฟล์', files: 'ไฟล์', artifact: 'Artifact', artifacts: 'Artifacts', 'file and artifact': 'ไฟล์และ Artifact', 'files and artifact': 'ไฟล์และ Artifact', 'file and artifacts': 'ไฟล์และ Artifacts', 'files and artifacts': 'ไฟล์และ Artifacts' }[noun];
+            return replace(verb + (nounTh ? nounTh : ' ' + m[2]));
+          }
+        }
+        m = trimmed.match(RE_RUNNING_CMD);
+        if (m && !isInHeaderOrBreadcrumb(contextEl)) return replace('กำลังรัน ' + m[1]);
+        m = trimmed.match(RE_DELETED_RECORDINGS);
+        if (m) return replace('ลบไฟล์บันทึกเสียงแล้ว ' + m[1] + ' รายการ (' + m[2] + ')');
+        m = trimmed.match(RE_DELETE_RECORDINGS_CONFIRM);
+        if (m) return replace('การดำเนินการนี้จะลบไฟล์บันทึกการโทร ' + m[1] + ' รายการ (' + m[2] + ') จากเครื่องของคุณ และไม่สามารถย้อนกลับได้');
+        m = trimmed.match(RE_USED_LIMIT);
+        if (m) {
+          const amount = { some: 'บางส่วนของ', all: 'ทั้งหมดของ', most: 'เกือบทั้งหมดของ' }[m[1].toLowerCase()];
+          const period = { weekly: 'โควตารายสัปดาห์', daily: 'โควตารายวัน', '5-hour': 'โควตา 5 ชั่วโมง', 'five-hour': 'โควตา 5 ชั่วโมง' }[m[2].toLowerCase()];
+          return replace('คุณใช้' + amount + period + 'แล้ว โดยจะรีเซ็ตทั้งหมดในอีก ' + formatDuration(m[3].replace(/,\\s*/g, ' ')));
+        }
+        m = trimmed.match(RE_NOT_USED_LIMIT);
+        if (m) {
+          const period = { weekly: 'โควตารายสัปดาห์', daily: 'โควตารายวัน', '5-hour': 'โควตา 5 ชั่วโมง', 'five-hour': 'โควตา 5 ชั่วโมง' }[m[1].toLowerCase()];
+          return replace('คุณยังไม่ได้ใช้' + period);
+        }
+        m = translateQuota(trimmed);
+        if (m) return replace(m);
+        m = trimmed.match(RE_YOUR_PLAN);
+        if (m) return replace('แพ็กเกจของคุณ: ' + m[1].trim());
+        m = trimmed.match(RE_AVAILABLE_AI_CREDITS);
+        if (m) return replace('AI Credits ที่ใช้ได้: ' + m[1].trim());
+        m = trimmed.match(RE_STARTED_SIDE_QUOTE);
+        if (m) return replace((m[1] === 'during' ? 'เริ่มระหว่าง “' : 'เริ่มจาก “') + m[2].trim() + '”');
+        m = trimmed.match(RE_EXITED_CODE_ONLY);
+        if (m) return replace('จบการทำงานด้วย Exit Code ' + m[1] + (m[2] ? '。' : ''));
+        m = trimmed.match(RE_SUMMARY_EXITED_CODE);
+        if (m) return replace(m[1].trim() + ' · Exit Code ' + m[2]);
+        m = trimmed.match(RE_ZIPPING_FOLDER);
+        if (m) return replace('กำลังบีบอัด ' + m[1] + '…');
+        m = trimmed.match(RE_UPDATED_AT);
+        if (m) {
+          const months = { jan: 'ม.ค.', feb: 'ก.พ.', mar: 'มี.ค.', apr: 'เม.ย.', may: 'พ.ค.', jun: 'มิ.ย.', jul: 'ก.ค.', aug: 'ส.ค.', sep: 'ก.ย.', oct: 'ต.ค.', nov: 'พ.ย.', dec: 'ธ.ค.' };
+          const date = m[1] ? m[1].replace(/^([A-Za-z]{3})\\s+(\\d{1,2})$/, (_, mon, day) => (months[mon.toLowerCase()] || mon) + ' ' + day) : '';
+          return replace('อัปเดตเมื่อ ' + (date ? date + ' ' : '') + m[2].trim());
+        }
+        return null;
+      }
+      if (boot.locale === 'en') return null;
 
       // 2. 快速短路：不含任何英文字母直接跳过动态正则
       if (!RE_HAS_ALPHA.test(trimmed)) return null;
@@ -736,7 +927,67 @@
 
     function resolveAttrTranslation(atrim, el) {
       const directHit = lookupRawDict(atrim);
-      if (typeof directHit === 'string') return resolveContextualDictTranslation(atrim, el, directHit);
+      if (typeof directHit === 'string') {
+        return boot.locale === 'zh-CN' ? resolveContextualDictTranslation(atrim, el, directHit) : directHit;
+      }
+      if (boot.locale === 'th-TH') {
+        const mModelTh = atrim.match(RE_ARIA_MODEL);
+        if (mModelTh) {
+          let name = mModelTh[1].trim();
+          let note = '';
+          const comma = name.indexOf(', ');
+          if (comma > 0) {
+            const noteRaw = name.slice(comma + 2).trim();
+            const noteHit = lookupRawDict(noteRaw);
+            if (typeof noteHit === 'string') {
+              name = name.slice(0, comma).trim();
+              note = ' (' + noteHit + ')';
+            }
+          }
+          return (name === 'Select model' ? 'เลือกโมเดล' : 'โมเดล ' + name) + note;
+        }
+        const lookupPermTh = (value) => {
+          if (!value) return value;
+          if (value.toLowerCase() === 'default') return 'ค่าเริ่มต้น (Default)';
+          return lookupRawDict(value) || DICT[value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()] || value;
+        };
+        const mPermSelTh = atrim.match(RE_ARIA_PERM_SEL);
+        if (mPermSelTh) return 'โหมดสิทธิ์ปัจจุบัน: ' + lookupPermTh(mPermSelTh[1].trim());
+        const mPermFixedTh = atrim.match(RE_ARIA_PERM_FIXED);
+        if (mPermFixedTh) {
+          const mode = lookupPermTh(mPermFixedTh[1].trim());
+          const note = (mPermFixedTh[2] || mPermFixedTh[3] || '').trim();
+          return 'โหมดสิทธิ์: ' + mode + (note ? ' (' + (note.toLowerCase() === 'cannot be changed mid-conversation' ? 'เปลี่ยนระหว่างการสนทนาไม่ได้' : lookupRawDict(note) || computeTextTranslation(note, el) || note) + ')' : '');
+        }
+        const mTurnTh = atrim.match(RE_ARIA_TURN);
+        if (mTurnTh) {
+          if (mTurnTh[3] && mTurnTh[4]) return 'รอบการสนทนา ' + mTurnTh[3] + ' จาก ' + mTurnTh[4];
+          const role = mTurnTh[2].toLowerCase() === 'user' ? 'ผู้ใช้' : 'Agent';
+          return 'รอบการสนทนาที่ ' + mTurnTh[1] + ' โดย ' + role;
+        }
+        const mOlderTh = atrim.match(RE_ARIA_LOAD_OLDER);
+        if (mOlderTh) {
+          if (mOlderTh[2] && mOlderTh[3]) return 'โหลดข้อความก่อนหน้า (กำลังแสดง ' + mOlderTh[2] + ' จาก ' + mOlderTh[3] + ')';
+          return 'โหลด ' + mOlderTh[1] + ' รอบการสนทนาก่อนหน้า';
+        }
+        const mBranchTh = atrim.match(RE_ARIA_BRANCH);
+        if (mBranchTh) return 'Branch ปัจจุบัน: ' + (mBranchTh[1].trim() === 'Select branch' ? 'เลือก Branch' : mBranchTh[1].trim());
+        const mProjectTh = atrim.match(RE_ARIA_PROJECT);
+        if (mProjectTh) {
+          const name = mProjectTh[1].trim();
+          return 'โปรเจกต์: ' + (name === 'No project' || name === 'No Project' ? 'ไม่ได้เชื่อมกับโปรเจกต์' : name);
+        }
+        const mLocationTh = atrim.match(RE_ARIA_LOCATION);
+        if (mLocationTh) {
+          const value = mLocationTh[1].trim();
+          const mapped = value.toLowerCase() === 'this computer' ? 'เครื่องนี้' : value.toLowerCase() === 'remote' ? 'Remote' : lookupRawDict(value) || value;
+          return 'ตำแหน่งที่ Agent ทำงาน: ' + mapped;
+        }
+        const mVersionTh = atrim.match(RE_ARIA_VERSION);
+        if (mVersionTh) return 'เวอร์ชัน ' + mVersionTh[1].trim();
+        return computeTextTranslation(atrim, el) || atrim;
+      }
+      if (boot.locale !== 'zh-CN') return computeTextTranslation(atrim, el) || atrim;
       const mModel = atrim.match(RE_ARIA_MODEL);
       if (mModel) {
         let mName = mModel[1].trim();

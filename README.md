@@ -2,7 +2,7 @@
 
 <h1>antigravity-codex-theme</h1>
 
-<p><strong>Google Antigravity 的 Codex 昼夜主题、中文界面、原生设置面板与实时会话统计插件</strong></p>
+<p><strong>Google Antigravity 的 Codex 昼夜主题、多语言界面、原生设置面板与实时会话统计插件</strong></p>
 
 <p>
   <a href="#快速安装">快速安装</a> ·
@@ -14,7 +14,7 @@
 </p>
 
 <p>
-  不修改安装包，通过本地 CDP 实时注入 Codex 昼夜主题、中文界面、嵌入式设置面板与四态用量统计。<br>
+  不修改安装包，通过本地 CDP 实时注入 Codex 昼夜主题、多语言界面、嵌入式设置面板与四态用量统计。<br>
   34 个独立模块，支持 <code>--only</code> 按需安装、面板内检查并直接更新与 Fork 自由定制。
 </p>
 
@@ -44,7 +44,7 @@ https://github.com/user-attachments/assets/749990f3-f2ce-48e7-8f66-3d7c88a7d49d
 | **Codex 昼夜主题** | 纯白浅色 (`codex-pure-white`) 与中性炭灰深色 (`codex-dark`)，无外部字体依赖，随 IDE 外观自动切换 | 默认开启 |
 | **原生设置面板与更新** | 直接嵌入 **设置 → Codex 主题**，可视化管理开关、模型档位、`sshHosts`、手动刷新与 **检查并直接更新** | 默认内置 |
 | **会话状态与用量统计** | 底部四态指示与一/二级用量面板、每轮悬浮详情卡，覆盖主对话、旁路提问与可选 **SSH Remote** | 默认开启（SSH 可选） |
-| **中文界面汉化** | `1,900+` 词条与额度耗尽/AI 点数动态提示汉化，`WeakMap` 原地替换，不影响 React 交互 | 默认开启 |
+| **多语言界面本地化** | 支持 English、简体中文与泰语；泰语采用自然开发者用语，保留 Agent / Token / Workspace / MCP 等术语 | 默认开启 |
 | **输入框下一句预测** | 回复结束后在空输入框显示 Ghost Text，按 `Tab` / `→` 补全，内置 `agy models` 二级级联模型选择 | **默认关闭**（按需开启） |
 
 ## 快速安装
@@ -111,11 +111,11 @@ git clone --depth=1 --filter=blob:none --sparse https://github.com/nkjDSLcvanv/a
 cd antigravity-codex-theme
 git sparse-checkout set --no-cone \
   /install.mjs /package.json /SKILL.md /LICENSE \
-  /user/config.json /user/custom.css /user/custom.js /user/i18n.override.json \
+  /user/config.json /user/custom.css /user/custom.js /user/i18n.override.json /user/i18n.th-TH.override.json \
   /core/daemon.mjs /core/shared.mjs /core/manifest.json /core/installer \
   /core/daemon/paths.mjs /core/daemon/cdp-bridge.mjs /core/daemon/cdp-relaunch.mjs /core/daemon/updater.mjs \
   /core/styles/45-settings-ui.css /core/runtime/00-head.js /core/runtime/75-settings-ui.js /core/runtime/90-tail.js \
-  /core/i18n.json /core/runtime/60-i18n-engine.js
+  /core/i18n.json /core/locales /core/runtime/60-i18n-engine.js
 node install.mjs install --only i18n --minimal
 ```
 
@@ -206,9 +206,11 @@ node install.mjs install --only i18n --minimal
 
 </details>
 
-### 中文界面汉化
+### 多语言界面本地化
 
-内置 `1,900+` 条词条，覆盖 Antigravity `2.30.x` ~ `2.35.1+` 的设置面板（含 Orchestrator 设置、输入框发送快捷键与沙箱权限）、菜单、权限选项、侧边栏、旁路提问、插件管理、工具审批状态，以及**模型额度耗尽与 AI 点数不足的动态时间/点数拼接提示**（自动保留英文模型名与思考档位）。采用 `WeakMap` 原地更新文本节点，不破坏 React 绑定；可通过 [user/i18n.override.json](user/i18n.override.json) 覆盖词条，或在设置面板一键关闭恢复英文。
+在 **设置 → Codex 主题 → Interface language** 中选择 **English / 简体中文 / ไทย**。简体中文继续使用原有完整词典；泰语使用独立的 `core/locales/th-TH.json` 词典，已覆盖原始界面词典中的全部 1,937 个词条，并为动态配额、时间、任务状态及无障碍标签提供泰语格式化。泰语翻译以自然表达为主，并保留 Agent、Workspace、Context、Token、Prompt、MCP、API、Terminal、IDE、CLI、Plugin 与 Skills 等常见开发术语。可通过 `user/i18n.th-TH.override.json` 自定义泰语词条。
+
+简体中文内置 `1,900+` 条词条，覆盖 Antigravity `2.30.x` ~ `2.35.1+` 的设置面板（含 Orchestrator 设置、输入框发送快捷键与沙箱权限）、菜单、权限选项、侧边栏、旁路提问、插件管理、工具审批状态，以及**模型额度耗尽与 AI 点数不足的动态时间/点数拼接提示**（自动保留英文模型名与思考档位）。采用 `WeakMap` 原地更新文本节点，不破坏 React 绑定；可通过 [user/i18n.override.json](user/i18n.override.json) 覆盖词条，或在设置面板一键关闭恢复英文。
 
 ### Codex 昼夜主题与实用修复
 
@@ -226,6 +228,7 @@ node install.mjs install --only i18n --minimal
 <summary>查看 user/ 目录与 config.json 高级字段说明</summary>
 
 - [user/config.json](user/config.json)
+  - `locale`：`"en"`、`"zh-CN"` 或 `"th-TH"`（界面语言；默认沿用原有简体中文行为）
   - `preset`：`"codex-pure-white"` 或 `"codex-dark"`
   - `themeVars`：按需覆盖 `--background`、`--sidebar`、`--primary`、`--ag-composer-*`、`--ag-dark-*` 等 CSS 变量
   - `telemetryLayout`：`"compact"`（默认）或 `"detailed"`
@@ -233,7 +236,8 @@ node install.mjs install --only i18n --minimal
   - `modules`：独立控制 `theme`、`i18n`、`metrics`、`sshRemote`、`promptSuggestions`、`deadlockHealer`、`zoomShortcuts`、`cdpAutoRelaunch`、`customCss`、`customJs`
   - `promptSuggestionModel`：输入框预测模型 ID（默认 `"gemini-3.8-flash-low"`）
   - `sshHosts`：显式允许探测的远端 SSH 主机列表（如 `["node032"]`）
-- [user/i18n.override.json](user/i18n.override.json)：追加或覆盖翻译词条。
+- [user/i18n.override.json](user/i18n.override.json)：追加或覆盖简体中文词条。
+- `user/i18n.th-TH.override.json`：追加或覆盖泰语词条。
 - [user/custom.css](user/custom.css) 与 [user/custom.js](user/custom.js)：注入自定义样式与脚本钩子，热重载时自动清理旧副作用。
 
 </details>
@@ -269,7 +273,8 @@ antigravity-codex-theme/
 │   ├── installer/              # 模块分组 / Manifest 校验打包 / 环境探测 / 跨平台自启与 CDP 管理
 │   ├── daemon.mjs              # 后台服务入口
 │   ├── shared.mjs              # 公共工具函数
-│   ├── i18n.json               # 1,900+ 界面词典
+│   ├── i18n.json               # 1,900+ 简体中文界面词典
+│   ├── locales/                 # 多语言词典（当前含 th-TH）
 │   └── manifest.json           # core/ 文件完整性哈希清单
 ├── tests/                      # 61 项 node:test 单元测试
 ├── user/                       # 个人配置与热重载目录
@@ -303,7 +308,7 @@ antigravity-codex-theme/
 
 ## English Overview
 
-`antigravity-codex-theme` brings Codex light and dark themes, Chinese UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
+`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
 
 - **Codex Light & Dark Themes**: Pure white (`codex-pure-white`) and charcoal dark (`codex-dark`) palettes with zero external font dependencies and automatic light/dark switching.
 - **Embedded Settings Panel & Self-Updater**: Mounts directly under **Settings → Codex Theme** to toggle modules, select prompt-suggestion models & thinking effort tiers via a 2-level `agy models` cascading menu, edit `sshHosts`, trigger manual hot-reloads, and check/apply in-panel updates (`node install.mjs update`) with integrity verification and automatic `core.prev/` rollback backups while preserving `user/`.

@@ -9,8 +9,8 @@
       "bytes": 5269
     },
     "daemon/cdp-bridge.mjs": {
-      "sha256": "66f46ca47abff656e4b82ba19c41bd9f829f0eac762e0f19f9842e0b101125c5",
-      "bytes": 51461
+      "sha256": "892341ae296a0491a1eb4a6f385810481a5a0761e50eee9f8d72bd9136333fde",
+      "bytes": 51581
     },
     "daemon/cdp-relaunch.mjs": {
       "sha256": "a26fbdc61ea7ec95871e1d7ce1b25b78c3ecfcdbcc677cadbd3d59108897d8e3",
@@ -21,8 +21,8 @@
       "bytes": 2123
     },
     "daemon/paths.mjs": {
-      "sha256": "05c4705e3387ed4c33acbd7d004e2290d1192467c45568f97b3dcbfb6ea72594",
-      "bytes": 17375
+      "sha256": "511bd1c8fe7f2421c2439a3cc36f0fe17ed9348102745c9c6cb0561801be4589",
+      "bytes": 17905
     },
     "daemon/prompt-suggest.mjs": {
       "sha256": "fe346ce102abb5d9a1ac76d68e8e7e054380ab2f042c7b3c2255a2c05be52407",
@@ -61,8 +61,8 @@
       "bytes": 12591
     },
     "installer/features.mjs": {
-      "sha256": "f5e9a466523175af8bdf346689e845975859cd6da3d4f30512812f934f2cef70",
-      "bytes": 6096
+      "sha256": "fa3aaa8cc807352ed6b345b00e7074e3ddde4617ddacd1ea7e5c316de08eb6fb",
+      "bytes": 6227
     },
     "installer/manifest.mjs": {
       "sha256": "4001613efc367581f47aa39e7080f39466810a38aff58c373eb654e54da5a651",
@@ -97,16 +97,16 @@
       "bytes": 58328
     },
     "runtime/60-i18n-engine.js": {
-      "sha256": "ae9dd2375129426ea209a8d05e3d5facb66eed11f5760171651b00db8aafdbe0",
-      "bytes": 42796
+      "sha256": "846b9d531d857ee382a8335012375e294b2df5f1453516ffb0570d55a29103e2",
+      "bytes": 60869
     },
     "runtime/70-prompt-suggestions.js": {
       "sha256": "ec3967100ca7f28c1e59073e8294f80bc432dc45414469946197a6a3e344e545",
       "bytes": 13183
     },
     "runtime/75-settings-ui.js": {
-      "sha256": "d6f5247d8b782026a2545c42924ed5404dc54ba5b09015bba1b6c0de80030ebc",
-      "bytes": 77013
+      "sha256": "a5fef819168a45bfbf9bf9d8d523c2b5ef49e29bdb474c3ce3bff3a3b07ce8da",
+      "bytes": 78839
     },
     "runtime/90-tail.js": {
       "sha256": "f042c5b79dc1011c2c001445085ab56d0e4232198093691c3809bd8da90644a1",
@@ -139,6 +139,10 @@
     "styles/45-settings-ui.css": {
       "sha256": "4ce253e7937b9461e8bbbc88e278bb29d377001bafe61550f07123cbad82442a",
       "bytes": 25573
+    },
+    "locales/th-TH.json": {
+      "sha256": "5caf357d1bba36d1d7f8282c2da32d4afccdae6f1527147acc9967b552d38741",
+      "bytes": 202117
     }
   }
 }

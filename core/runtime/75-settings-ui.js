@@ -155,6 +155,7 @@
       const bootUserCfg = boot.userConfig && typeof boot.userConfig === 'object' ? boot.userConfig : {};
       const uiState = {
         config: {
+          locale: bootUserCfg.locale || boot.locale || 'zh-CN',
           telemetryLayout: bootUserCfg.telemetryLayout || boot.telemetryLayout || 'compact',
           telemetryCacheMode: bootUserCfg.telemetryCacheMode || boot.telemetryCacheMode || 'session',
           promptSuggestionModel: bootUserCfg.promptSuggestionModel || 'gemini-3.8-flash-low',
@@ -192,7 +193,7 @@
       }
 
       function isZhUi() {
-        return Boolean(uiState.config.modules.i18n);
+        return Boolean(uiState.config.modules.i18n) && (uiState.config.locale || 'zh-CN') === 'zh-CN';
       }
 
       function getStrings() {
@@ -210,8 +211,10 @@
             secCore: '核心模块',
             modTheme: 'Codex 昼夜主题',
             modThemeDesc: '浅色纯白与中性炭灰深色配色，随 IDE 外观自动切换',
-            modI18n: '中文界面汉化',
-            modI18nDesc: '内置 1,900+ 界面词条，原地更新不影响交互，关闭即恢复英文',
+            modI18n: '多语言界面本地化',
+            modI18nDesc: '支持 English、简体中文与泰语；未翻译词条保留英文',
+            localeLbl: '界面语言',
+            localeDesc: '选择 Antigravity 界面显示的语言',
             modMetrics: '实时会话状态与用量统计',
             modMetricsDesc: '底部四态状态指示、一/二级明细面板与每轮对话尾部统计',
             secOptional: '可选增强',
@@ -284,8 +287,10 @@
           secCore: 'Core Modules',
           modTheme: 'Codex Light & Dark Theme',
           modThemeDesc: 'Pure white light and charcoal dark palettes that follow IDE appearance automatically',
-          modI18n: 'Chinese UI Localization',
-          modI18nDesc: '1,900+ built-in UI entries applied in place; disable to restore English immediately',
+          modI18n: 'Interface Localization',
+          modI18nDesc: 'Choose English, Simplified Chinese, or Thai; untranslated strings stay in English',
+          localeLbl: 'Interface language',
+          localeDesc: 'Choose the language used by the Antigravity interface',
           modMetrics: 'Live Session Status & Telemetry',
           modMetricsDesc: 'Bottom 4-state status indicator, expandable L1/L2 panels, and per-turn footer stats',
           secOptional: 'Optional Enhancements',
@@ -412,6 +417,7 @@
         if (!res || !res.ok) return;
         if (res.config) {
           uiState.config = {
+            locale: res.config.locale || uiState.config.locale || 'zh-CN',
             telemetryLayout: res.config.telemetryLayout || uiState.config.telemetryLayout,
             telemetryCacheMode: res.config.telemetryCacheMode || uiState.config.telemetryCacheMode,
             promptSuggestionModel: res.config.promptSuggestionModel || uiState.config.promptSuggestionModel,
@@ -541,6 +547,7 @@
             uiState.agyStatus = Object.assign({}, uiState.agyStatus, { running: true, warmed: false });
           }
         }
+        if (patch.locale) uiState.config.locale = patch.locale;
         if (patch.telemetryLayout) uiState.config.telemetryLayout = patch.telemetryLayout;
         if (patch.telemetryCacheMode) uiState.config.telemetryCacheMode = patch.telemetryCacheMode;
         if (patch.promptSuggestionModel) {
@@ -1189,8 +1196,16 @@
           (mods.i18n !== false ? 'checked' : '') +
           ' />' +
           '</div></div>' +
+          '<div class="ag-s-row"><div class="ag-s-row-main" style="align-items:center;justify-content:space-between;gap:16px">' +
+          '<div class="ag-s-row-info"><label class="ag-s-row-label" for="ag-s-locale">' + escHtml(s.localeLbl) + '</label>' +
+          '<div class="ag-s-row-desc">' + escHtml(s.localeDesc) + '</div></div>' +
+          '<select id="ag-s-locale" data-bind-locale="1" aria-label="Interface language" style="min-width:150px;max-width:190px;padding:7px 10px;border:1px solid var(--ag-s-border, #8885);border-radius:8px;background:var(--vscode-dropdown-background, var(--ag-s-card-bg, transparent));color:inherit">' +
+          '<option value="en" ' + ((cfg.locale || 'zh-CN') === 'en' ? 'selected' : '') + '>English</option>' +
+          '<option value="zh-CN" ' + ((cfg.locale || 'zh-CN') === 'zh-CN' ? 'selected' : '') + '>简体中文</option>' +
+          '<option value="th-TH" ' + ((cfg.locale || 'zh-CN') === 'th-TH' ? 'selected' : '') + '>ไทย</option>' +
+          '</select></div>' +
           '<div class="ag-s-row"><div class="ag-s-row-main">' +
-          '<div class="ag-s-row-info"><label class="ag-s-row-label" for="ag-s-sw-metrics">' +
+          '<div class="ag-s-row-info"><label class="ag-s-row-label" for="ag-s-sw-metrics">'
           escHtml(s.modMetrics) +
           '</label><div class="ag-s-row-desc">' +
           escHtml(s.modMetricsDesc) +
@@ -1535,6 +1550,12 @@
 
       function bindPaneEvents(pane) {
         pane.addEventListener('change', (ev) => {
+          const localeSelect = ev.target && ev.target.closest ? ev.target.closest('select[data-bind-locale]') : null;
+          if (localeSelect) {
+            const locale = ['en', 'zh-CN', 'th-TH'].includes(localeSelect.value) ? localeSelect.value : 'zh-CN';
+            commitPatch({ locale });
+            return;
+          }
           const sw = ev.target && ev.target.closest ? ev.target.closest('input.ag-s-switch[data-bind-mod]') : null;
           if (!sw) return;
           const mod = sw.getAttribute('data-bind-mod');
