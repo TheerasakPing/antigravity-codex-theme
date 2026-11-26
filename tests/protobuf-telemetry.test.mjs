@@ -247,6 +247,37 @@ test('buildInlineTelemetryHtml renders Codex compact layout by default and detai
   assert.ok(detailedHtml.includes('Out 1.5k'));
 });
 
+test('buildTurnSummaries localizes the payload for Thai, Chinese, and English', () => {
+  const generations = [{
+    idx: 0, inTok: 1000, outTok: 2000, cacheWrite: 200, cacheRead: 8800, ctx: 50000,
+    maxCtx: 512000, maxStepIdx: 3, modelName: 'Gemini 4 Hydrogen (High)', thinkTok: 300,
+    respTok: 1700, ttft: 1.1, stream: 15.6, totDur: 20.7
+  }];
+  const thaiDict = JSON.parse(fs.readFileSync(new URL('../core/locales/th-TH.json', import.meta.url), 'utf8'));
+  const chineseDict = JSON.parse(fs.readFileSync(new URL('../core/i18n.json', import.meta.url), 'utf8'));
+  const thai = buildTurnSummaries(generations, [1], 0, 512000, 'th-TH')[0];
+  assert.ok(thai.badgeText.includes(thaiDict['Telemetry input'] + ' 9.8k'));
+  assert.ok(thai.badgeText.includes(thaiDict['Telemetry output'] + ' 2.0k'));
+  assert.ok(thai.badgeText.includes(thaiDict['Telemetry cache'] + ' 88.0%'));
+  assert.ok(thai.badgeHtml.includes(thaiDict['Telemetry input'] + ' 9.8k'));
+  assert.ok(thai.badgeTitle.includes(thaiDict['Current context']));
+  assert.ok(thai.badgeTitle.includes('1 ' + thaiDict['Step count']));
+  assert.ok(thai.badgeTitle.includes(thaiDict['Elapsed time'] + ' 20.7s'));
+  assert.equal(thai.telemetryLabels['Current context'], thaiDict['Current context']);
+  assert.doesNotMatch(thai.badgeText + thai.badgeTitle, /[\u3400-\u9fff]/);
+
+  const chinese = buildTurnSummaries(generations, [1], 0, 512000, 'zh-CN')[0];
+  assert.ok(chinese.badgeText.includes(chineseDict['Telemetry input'] + ' 9.8k'));
+  assert.ok(chinese.badgeText.includes(chineseDict['Telemetry output'] + ' 2.0k'));
+  assert.ok(chinese.badgeText.includes(chineseDict['Telemetry cache'] + ' 88.0%'));
+  assert.ok(chinese.badgeTitle.includes(chineseDict['Current context']));
+
+  const english = buildTurnSummaries(generations, [1], 0, 512000, 'en')[0];
+  assert.match(english.badgeText, /In 9.8k/);
+  assert.match(english.badgeText, /Out 2.0k/);
+  assert.match(english.badgeText, /Cache 88\.0%/);
+  assert.match(english.badgeTitle, /Current context/);
+});
 test('computeSegPcts & buildTurnSummaries compute balanced bar percentages and turn rollups', () => {
   const pcts = computeSegPcts([10, 990], 100, 2);
   assert.ok(pcts[0] >= 2);

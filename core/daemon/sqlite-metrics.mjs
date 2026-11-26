@@ -439,7 +439,7 @@ export function createMetricsReader({ getDatabaseSync, getConfig }) {
       const safeDotTitle = statusTitle.replace(/"/g, '&quot;');
       const statusDotHtml = `<span class="${statusDotClass}" aria-label="${safeDotTitle}"></span>`;
 
-      const turns = buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim);
+      const turns = buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim, locale);
       const inlineHtml = localizeTelemetryHtml(buildInlineTelemetryHtml({
         telemetryLayout,
         telemetryCacheMode,

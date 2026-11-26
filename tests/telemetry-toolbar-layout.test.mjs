@@ -351,7 +351,7 @@ function buildComposerDom({ withExplicitFooter = true, boxWidth = 768, footerWid
   return { body, cid, inputBox, card, footer, leftGroup, rightGroup, depth4, depth3, depth2, depth1, modelTrigger };
 }
 
-function mountTelemetryBundle(dom, bootOverrides = {}) {
+function mountTelemetryBundle(dom, bootOverrides = {}, testOptions = {}) {
   const runtimeDir = path.join(ROOT_DIR, 'core', 'runtime');
   const parts = ['00-head.js', '30-antigravity-probe.js', '40-status-machine.js', '50-telemetry-ui.js', '90-tail.js'];
   const head = new FakeElement('HEAD');
@@ -444,7 +444,12 @@ function mountTelemetryBundle(dom, bootOverrides = {}) {
     console
   };
 
-  const code = parts.map((p) => fs.readFileSync(path.join(runtimeDir, p), 'utf8')).join('\n');
+  let code = parts.map((p) => fs.readFileSync(path.join(runtimeDir, p), 'utf8')).join('\n');
+  if (testOptions.exposeTurnFormatter) {
+    const marker = '  let activeTurnBadgeEl = null;';
+    if (!code.includes(marker)) throw new Error('Turn formatter test hook insertion point not found');
+    code = code.replace(marker, '  window.__ag_test_formatTurnBadgeData = formatTurnBadgeData;\n' + marker);
+  }
   vm.runInNewContext(code, sandbox);
 
   const flushRaf = () => {
@@ -463,6 +468,47 @@ function mountTelemetryBundle(dom, bootOverrides = {}) {
   };
 }
 
+test('Per-turn telemetry badges and details use server locale labels consistently', () => {
+  const dom = buildComposerDom({ withExplicitFooter: true });
+  const thaiDict = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'core/locales/th-TH.json'), 'utf8'));
+  const chineseDict = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'core/i18n.json'), 'utf8'));
+  const labelKeys = [
+    'Telemetry input', 'Telemetry output', 'Telemetry cache', 'Current context', 'Turn output',
+    'Thinking tokens', 'Text and tools', 'New tokens', 'Write cache', 'Read cache', 'Cache hit rate',
+    'Turn input', 'End-to-end speed', 'Streaming time', 'Total time', 'Speed and duration',
+    'Step count', 'Tokens per second'
+  ];
+  const labelsFor = (dict) => Object.fromEntries(labelKeys.map((key) => [key, dict[key]]));
+  const turn = {
+    model: 'Gemini 4 Hydrogen (High)', promptTok: 10000, promptStr: '10k', outTok: 2000, outStr: '2k',
+    cacheRate: '80.0%', tps: 128, lastCtx: 50000, limitStr: '512k', ctxPct: 10, thinkTok: 300,
+    respTok: 1700, inTok: 1000, cacheWrite: 200, cacheRead: 8800, e2eTps: 96.5,
+    streamDur: 15.6, totDur: 20.7, steps: 3
+  };
+  const thaiTurn = Object.assign({}, turn, { telemetryLabels: labelsFor(thaiDict) });
+  const thaiEnv = mountTelemetryBundle(dom, { locale: 'th-TH', i18nDict: {} }, { exposeTurnFormatter: true });
+  const thai = thaiEnv.win.__ag_test_formatTurnBadgeData(thaiTurn);
+  assert.ok(thai.html.includes(thaiDict['Telemetry input'] + ' 10k'));
+  assert.ok(thai.html.includes(thaiDict['Telemetry output'] + ' 2k'));
+  assert.ok(thai.html.includes(thaiDict['Telemetry cache'] + ' 80.0%'));
+  for (const key of labelKeys.filter((key) => key !== 'Tokens per second')) assert.ok(thai.tooltipHtml.includes(thaiDict[key]), 'Thai tooltip should include ' + key);
+  assert.doesNotMatch(thai.tooltipHtml, /[\u3400-\u9fff]/);
+  assert.ok(thai.ariaLabel.includes(thaiDict['Telemetry input'] + ' 10k'));
+  assert.ok(thai.ariaLabel.includes(thaiDict['Tokens per second']));
+
+  const chineseTurn = Object.assign({}, turn, { telemetryLabels: labelsFor(chineseDict) });
+  const chineseEnv = mountTelemetryBundle(dom, { locale: 'zh-CN', i18nDict: {} }, { exposeTurnFormatter: true });
+  const chinese = chineseEnv.win.__ag_test_formatTurnBadgeData(chineseTurn);
+  assert.ok(chinese.html.includes(chineseDict['Telemetry input'] + ' 10k'));
+  assert.ok(chinese.tooltipHtml.includes(chineseDict['Current context']));
+  assert.ok(chinese.tooltipHtml.includes(chineseDict['Turn output']));
+
+  const englishEnv = mountTelemetryBundle(dom, { locale: 'en', i18nDict: {} }, { exposeTurnFormatter: true });
+  const english = englishEnv.win.__ag_test_formatTurnBadgeData(Object.assign({}, turn, { telemetryLabels: {} }));
+  assert.match(english.html, /In 10k/);
+  assert.match(english.tooltipHtml, /Current context/);
+  assert.match(english.tooltipHtml, /Turn output/);
+});
 test('Opening model selector dropdown or tooltip never hijacks toolbar row or moves pill into inner wrappers', () => {
   const dom = buildComposerDom({ withExplicitFooter: true });
   const env = mountTelemetryBundle(dom, { telemetryLayout: 'compact' });

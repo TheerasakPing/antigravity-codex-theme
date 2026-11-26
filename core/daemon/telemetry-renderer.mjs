@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 /**
  * core/daemon/telemetry-renderer.mjs — Codex Inline Pill, Bento Tooltip & Per-Turn Formatters
  */
@@ -68,6 +70,44 @@ export function localizeTelemetryHtml(html, locale = "zh-CN") {
   }
   return output;
 }
+const TURN_TELEMETRY_LABEL_KEYS = [
+  'Telemetry input', 'Telemetry output', 'Telemetry cache', 'Current context',
+  'Turn output', 'Thinking tokens', 'Text and tools', 'New tokens', 'Write cache',
+  'Read cache', 'Cache hit rate', 'Turn input', 'End-to-end speed', 'Streaming time',
+  'Total time', 'Speed and duration', 'Step count', 'Tokens per second', 'Elapsed time'
+];
+const TURN_TELEMETRY_ENGLISH = {
+  'Telemetry input': 'In', 'Telemetry output': 'Out', 'Telemetry cache': 'Cache',
+  'Current context': 'Current context', 'Turn output': 'Turn output',
+  'Thinking tokens': 'Thinking tokens', 'Text and tools': 'Text and tools',
+  'New tokens': 'New', 'Write cache': 'Cache write', 'Read cache': 'Cache read',
+  'Cache hit rate': 'Cache hit rate', 'Turn input': 'Turn input',
+  'End-to-end speed': 'End-to-end', 'Streaming time': 'Stream', 'Total time': 'Total',
+  'Speed and duration': 'Speed and duration', 'Step count': 'steps',
+  'Tokens per second': 'tokens per second', 'Elapsed time': 'Elapsed'
+};
+const TURN_TELEMETRY_LABELS_CACHE = new Map();
+function loadTurnTelemetryLabels(locale) {
+  const normalized = locale === 'th-TH' || locale === 'en' ? locale : 'zh-CN';
+  const cached = TURN_TELEMETRY_LABELS_CACHE.get(normalized);
+  if (cached) return cached;
+  if (normalized === 'en') {
+    const labels = Object.assign({}, TURN_TELEMETRY_ENGLISH);
+    TURN_TELEMETRY_LABELS_CACHE.set(normalized, labels);
+    return labels;
+  }
+  const relativePath = normalized === 'th-TH' ? '../locales/th-TH.json' : '../i18n.json';
+  let dictionary = {};
+  try { dictionary = JSON.parse(fs.readFileSync(new URL(relativePath, import.meta.url), 'utf8')); } catch {}
+  const labels = {};
+  for (const key of TURN_TELEMETRY_LABEL_KEYS) {
+    const value = dictionary[key];
+    labels[key] = typeof value === 'string' && value.trim() ? value : TURN_TELEMETRY_ENGLISH[key];
+  }
+  TURN_TELEMETRY_LABELS_CACHE.set(normalized, labels);
+  return labels;
+}
+
 export function fmtTok(n) {
   if (!n || n <= 0) return '0';
   if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
@@ -442,7 +482,7 @@ export function formatTurnModelName(gens) {
   return last && last !== first ? `${first} → ${last}` : first;
 }
 
-export function buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim) {
+export function buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim, locale = 'zh-CN') {
   if (!valid || valid.length === 0 || !valid.some((it) => it.maxStepIdx >= 0)) {
     return [];
   }
@@ -476,6 +516,7 @@ export function buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim) 
   const MIN_STREAM_DUR_SEC = 0.12;
   const MAX_SANITY_STREAM_TPS = 3000;
   const turns = [];
+  const telemetryLabels = loadTurnTelemetryLabels(locale);
 
   for (let ki = 0; ki < keys.length; ki++) {
     const k = keys[ki];
@@ -524,22 +565,26 @@ export function buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim) 
     const limitStr = formatContextLimitLabel(contextLimit);
     const ctxPct = Math.round((lastCtx / contextLimit) * 100);
 
+    const inputLabel = telemetryLabels['Telemetry input'];
+    const outputLabel = telemetryLabels['Telemetry output'];
+    const cacheLabel = telemetryLabels['Telemetry cache'];
     const badgeParts = [];
     if (model) badgeParts.push(model);
-    badgeParts.push(`${tps} t/s`);
-    badgeParts.push(`In ${fmtTok(inTokSum + cacheReadSum)}`);
-    badgeParts.push(`Out ${outStr}`);
-    badgeParts.push(`Cache ${cacheRate}`);
-    const badgeText = badgeParts.join(' · ');
+    badgeParts.push(String(tps) + ' tok/s');
+    badgeParts.push(inputLabel + ' ' + fmtTok(inTokSum + cacheReadSum));
+    badgeParts.push(outputLabel + ' ' + outStr);
+    badgeParts.push(cacheLabel + ' ' + cacheRate);
+    const badgeText = badgeParts.join(' \u00b7 ');
 
     const badgeHtml = [
-      model ? `<span class="ag-turn-model">${escapeHtml(model)}</span><span class="ag-sep">·</span>` : '',
-      `<span>${tps} t/s</span><span class="ag-sep">·</span>`,
-      `<span>Out ${outStr}</span><span class="ag-sep">·</span>`,
-      `<span>Cache ${cacheRate}</span>`
+      model ? '<span class="ag-turn-model">' + escapeHtml(model) + '</span><span class="ag-sep" aria-hidden="true">\u00b7</span>' : '',
+      '<span>' + escapeHtml(inputLabel) + ' ' + fmtTok(inTokSum + cacheReadSum) + '</span><span class="ag-sep" aria-hidden="true">\u00b7</span>',
+      '<span>' + escapeHtml(outputLabel) + ' ' + outStr + '</span><span class="ag-sep" aria-hidden="true">\u00b7</span>',
+      '<span>' + escapeHtml(cacheLabel) + ' ' + cacheRate + '</span><span class="ag-sep" aria-hidden="true">\u00b7</span>',
+      '<span>' + tps + ' tok/s</span>'
     ].join('');
 
-    const badgeTitle = `Ctx ${ctxStr}/${limitStr} (${ctxPct}%) · ${gens.length} 步 · 耗时 ${totDurSum.toFixed(1)}s`;
+    const badgeTitle = telemetryLabels['Current context'] + ' ' + ctxStr + '/' + limitStr + ' (' + ctxPct + '%) \u00b7 ' + gens.length + ' ' + telemetryLabels['Step count'] + ' \u00b7 ' + telemetryLabels['Elapsed time'] + ' ' + totDurSum.toFixed(1) + 's';
 
     turns.push({
       turnIndex: k >= 0 ? k + 1 : 0,
@@ -570,7 +615,8 @@ export function buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim) 
       cacheRate,
       badgeText,
       badgeHtml,
-      badgeTitle
+      badgeTitle,
+      telemetryLabels
     });
   }
 

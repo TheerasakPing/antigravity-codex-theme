@@ -33,24 +33,24 @@
       "bytes": 7683
     },
     "daemon/sqlite-metrics.mjs": {
-      "sha256": "e915998793d5212a5c9d328619f4eb6c061417146e7a195ab81ad7c284a2bea7",
-      "bytes": 22174
+      "sha256": "45a8b5d79e45ed6bfcf41784af89871c270835cb1e841786e0ee64ddac8656e9",
+      "bytes": 22182
     },
     "daemon/ssh-remote.mjs": {
       "sha256": "6be0da34d9b0a78449ed34bceba5b11c087d884d9c6fa1519b1502052b49ab1a",
       "bytes": 33526
     },
     "daemon/telemetry-renderer.mjs": {
-      "sha256": "86d45c6fdcc3ef3013d7acd55c67cf4ca8d37a89114aed098428a33d8b4805a9",
-      "bytes": 23793
+      "sha256": "be5f016d1f41c390164ad09f2d691edeccb306732398b0cf713bb29676b82b58",
+      "bytes": 26513
     },
     "daemon/updater.mjs": {
       "sha256": "a2f1d2b52d52f7aa5905d07791842552e40ac02035bfc6527f0f25b957d30e1a",
       "bytes": 14679
     },
     "i18n.json": {
-      "sha256": "3c2d54346fd25245622a2fc58e22ec4760612c727a7b5ecf374d50adab6c886d",
-      "bytes": 119181
+      "sha256": "824f337c3b9fefbac6676d44c234ea7a111d1ee8ce8ad7060e533b72eb523a53",
+      "bytes": 119800
     },
     "installer/cdp-launch.mjs": {
       "sha256": "6685ab162b5c8bfc6a6f9909d9646d257f7978d40337d71390e05c59f598f51d",
@@ -73,8 +73,8 @@
       "bytes": 16866
     },
     "locales/th-TH.json": {
-      "sha256": "5caf357d1bba36d1d7f8282c2da32d4afccdae6f1527147acc9967b552d38741",
-      "bytes": 202117
+      "sha256": "c0b92bb8e6a343d4bcfa4a008ba30afc76b500b66df4f54b5a770a54e6e2d2a3",
+      "bytes": 203131
     },
     "runtime/00-head.js": {
       "sha256": "fda58042503b469848dae2bc890b6b3a42194116db480da404b437bf541b8935",
@@ -97,8 +97,8 @@
       "bytes": 13135
     },
     "runtime/50-telemetry-ui.js": {
-      "sha256": "a8be19daee948d9094090440a179a8fbcd93814782adfc1e2436af2a658c4c40",
-      "bytes": 58328
+      "sha256": "09be252e7cdde7472382727f9c3ff09ce2e7576e4808fee47b577d19c98c3ba9",
+      "bytes": 61288
     },
     "runtime/60-i18n-engine.js": {
       "sha256": "846b9d531d857ee382a8335012375e294b2df5f1453516ffb0570d55a29103e2",
@@ -133,8 +133,8 @@
       "bytes": 7466
     },
     "styles/30-telemetry.css": {
-      "sha256": "2f5a45797cf9366fa7f8d9c75dd623e2655225cd6297de83fcd99509e40a7256",
-      "bytes": 28033
+      "sha256": "6361574607dcf6f8bd609bf8b83e66c674a14841bc0fc6d07b68d3c2e79da2a4",
+      "bytes": 28000
     },
     "styles/40-prompt-suggestions.css": {
       "sha256": "e0c9a7d7e146e2771fd8c93dd8ccf8c6e7d9d8114743508b3712b2be77fe9206",

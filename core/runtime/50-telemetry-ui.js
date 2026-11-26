@@ -260,6 +260,7 @@
         if (pill) positionMetricsTooltip(pill, tt, ownerPane ? ownerPane.inputBox : null);
       });
     }
+    if (tt && tt.getAttribute('lang') !== (boot.locale || 'en')) tt.setAttribute('lang', boot.locale || 'en');
     return tt;
   }
 
@@ -566,6 +567,7 @@
       try { ps.ro.observe(inputBox); } catch (e) {}
     }
 
+    if (pill.getAttribute('lang') !== (boot.locale || 'en')) pill.setAttribute('lang', boot.locale || 'en');
     return pill;
   }
 
@@ -880,20 +882,46 @@
     return null;
   }
 
+  function getTelemetryLabel(turn, key, fallback = key) {
+    const turnLabels = turn && turn.telemetryLabels && typeof turn.telemetryLabels === 'object' ? turn.telemetryLabels : null;
+    const turnValue = turnLabels && turnLabels[key];
+    if (typeof turnValue === 'string' && turnValue.trim()) return turnValue;
+    const dict = boot.i18nDict && typeof boot.i18nDict === 'object' ? boot.i18nDict : null;
+    const translated = dict && dict[key];
+    return typeof translated === 'string' && translated.trim() ? translated : fallback;
+  }
+
   function formatTurnBadgeData(t) {
+    const inputLabel = getTelemetryLabel(t, 'Telemetry input', 'In');
+    const outputLabel = getTelemetryLabel(t, 'Telemetry output', 'Out');
+    const cacheLabel = getTelemetryLabel(t, 'Telemetry cache', 'Cache');
     const parts = [];
-    if (t.model) parts.push('<span class="ag-turn-model">' + escapeStatusHtml(t.model) + '</span>');
+    const ariaParts = [];
+
+    if (t.model) {
+      parts.push('<span class="ag-turn-model">' + escapeStatusHtml(t.model) + '</span>');
+      ariaParts.push(t.model);
+    }
+
     const promptTok = typeof t.promptTok === 'number' ? t.promptTok : t.inTok + t.cacheWrite + t.cacheRead;
     const promptStr = t.promptStr || '';
     if (promptTok > 0 && promptStr) {
-      parts.push('<span>In ' + escapeStatusHtml(promptStr) + '</span>');
+      parts.push('<span>' + escapeStatusHtml(inputLabel) + ' ' + escapeStatusHtml(promptStr) + '</span>');
+      ariaParts.push(inputLabel + ' ' + promptStr);
     }
-    if (t.outTok > 0) parts.push('<span>Out ' + escapeStatusHtml(t.outStr) + '</span>');
+    if (t.outTok > 0) {
+      parts.push('<span>' + escapeStatusHtml(outputLabel) + ' ' + escapeStatusHtml(t.outStr) + '</span>');
+      ariaParts.push(outputLabel + ' ' + t.outStr);
+    }
     if (promptTok > 0 && t.cacheRate) {
-      parts.push('<span>Cache ' + escapeStatusHtml(t.cacheRate) + '</span>');
+      parts.push('<span>' + escapeStatusHtml(cacheLabel) + ' ' + escapeStatusHtml(t.cacheRate) + '</span>');
+      ariaParts.push(cacheLabel + ' ' + t.cacheRate);
     }
-    if (t.tps > 0) parts.push('<span>' + t.tps + ' tok/s</span>');
-    const html = parts.join('<span class="ag-sep"> · </span>');
+    if (t.tps > 0) {
+      parts.push('<span>' + escapeStatusHtml(String(t.tps)) + ' tok/s</span>');
+      ariaParts.push(t.tps + ' ' + getTelemetryLabel(t, 'Tokens per second', 'tokens per second'));
+    }
+    const html = parts.join('<span class="ag-sep" aria-hidden="true"> | </span>');
 
     const rows = [];
     if (t.lastCtx > 0) {
@@ -908,50 +936,94 @@
         '">(' +
         escapeStatusHtml(String(t.ctxPct)) +
         '%)</span></span>';
-      rows.push('<div class="ag-tmt-row"><span class="ag-tmt-lbl">当前上下文</span><span class="ag-tmt-val">' + ctxVal + '</span></div>');
+      rows.push(
+        '<div class="ag-tmt-row"><span class="ag-tmt-lbl">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Current context')) +
+        '</span><span class="ag-tmt-val">' +
+        ctxVal +
+        '</span></div>'
+      );
     }
     if (t.outTok > 0) {
       const outVal =
         '<span class="ag-tmt-nowrap">' +
         escapeStatusHtml(t.outTok.toLocaleString('en-US')) +
-        '</span> <span class="ag-tmt-nowrap ag-tmt-sub">(思考 ' +
+        '</span> <span class="ag-tmt-nowrap ag-tmt-sub">(' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Thinking tokens')) +
+        ' ' +
         escapeStatusHtml(t.thinkTok.toLocaleString('en-US')) +
-        ' + 正文/工具 ' +
+        ' + ' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Text and tools')) +
+        ' ' +
         escapeStatusHtml(t.respTok.toLocaleString('en-US')) +
         ')</span>';
-      rows.push('<div class="ag-tmt-row"><span class="ag-tmt-lbl">本轮输出</span><span class="ag-tmt-val">' + outVal + '</span></div>');
+      rows.push(
+        '<div class="ag-tmt-row"><span class="ag-tmt-lbl">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Turn output')) +
+        '</span><span class="ag-tmt-val">' +
+        outVal +
+        '</span></div>'
+      );
     }
     const promptSum = t.inTok + t.cacheWrite + t.cacheRead;
     if (promptSum > 0) {
       const inVal =
-        '<span class="ag-tmt-nowrap">新增 ' +
+        '<span class="ag-tmt-nowrap">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'New tokens')) +
+        ' ' +
         escapeStatusHtml(t.inTok.toLocaleString('en-US')) +
         '</span>' +
         (t.cacheWrite > 0
-          ? ' <span class="ag-tmt-nowrap">+ 写缓存 ' + escapeStatusHtml(t.cacheWrite.toLocaleString('en-US')) + '</span>'
+          ? ' <span class="ag-tmt-nowrap">+ ' +
+            escapeStatusHtml(getTelemetryLabel(t, 'Write cache')) +
+            ' ' +
+            escapeStatusHtml(t.cacheWrite.toLocaleString('en-US')) +
+            '</span>'
           : '') +
-        ' <span class="ag-tmt-nowrap">+ 读缓存 ' +
+        ' <span class="ag-tmt-nowrap">+ ' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Read cache')) +
+        ' ' +
         escapeStatusHtml(t.cacheRead.toLocaleString('en-US')) +
-        '</span> <span class="ag-tmt-nowrap ag-tmt-sub">(命中率 ' +
+        '</span> <span class="ag-tmt-nowrap ag-tmt-sub">(' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Cache hit rate')) +
+        ' ' +
         escapeStatusHtml(t.cacheRate) +
         ')</span>';
-      rows.push('<div class="ag-tmt-row"><span class="ag-tmt-lbl">本轮累计输入</span><span class="ag-tmt-val">' + inVal + '</span></div>');
+      rows.push(
+        '<div class="ag-tmt-row"><span class="ag-tmt-lbl">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Turn input')) +
+        '</span><span class="ag-tmt-val">' +
+        inVal +
+        '</span></div>'
+      );
     }
     if (t.tps > 0 || t.totDur > 0) {
       const spdVal =
         (t.tps > 0
           ? '<span class="ag-tmt-nowrap">' +
             escapeStatusHtml(String(t.tps)) +
-            ' tok/s <span class="ag-tmt-sub">(端到端 ' +
+            ' tok/s <span class="ag-tmt-sub">(' +
+            escapeStatusHtml(getTelemetryLabel(t, 'End-to-end speed')) +
+            ' ' +
             escapeStatusHtml(String(t.e2eTps)) +
-            ' tok/s)</span></span> · '
+            ' tok/s)</span></span> | '
           : '') +
-        '<span class="ag-tmt-nowrap">流式 ' +
+        '<span class="ag-tmt-nowrap">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Streaming time')) +
+        ' ' +
         escapeStatusHtml(String(t.streamDur)) +
-        's / 总计 ' +
+        's / ' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Total time')) +
+        ' ' +
         escapeStatusHtml(String(t.totDur)) +
         's</span>';
-      rows.push('<div class="ag-tmt-row"><span class="ag-tmt-lbl">速度与耗时</span><span class="ag-tmt-val">' + spdVal + '</span></div>');
+      rows.push(
+        '<div class="ag-tmt-row"><span class="ag-tmt-lbl">' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Speed and duration')) +
+        '</span><span class="ag-tmt-val">' +
+        spdVal +
+        '</span></div>'
+      );
     }
 
     const hdrHtml = t.model
@@ -959,12 +1031,15 @@
         escapeStatusHtml(t.model) +
         '</span><span class="ag-tmt-chip">' +
         escapeStatusHtml(String(t.steps || 1)) +
-        ' 步</span></div>'
+        ' ' +
+        escapeStatusHtml(getTelemetryLabel(t, 'Step count')) +
+        '</span></div>'
       : '';
-    const tooltipHtml = hdrHtml || rows.length > 0 ? hdrHtml + '<div class="ag-tmt-grid">' + rows.join('') + '</div>' : '';
-    return { html, tooltipHtml };
+    const tooltipHtml = hdrHtml || rows.length > 0
+      ? hdrHtml + '<div class="ag-tmt-grid">' + rows.join('') + '</div>'
+      : '';
+    return { html, tooltipHtml, ariaLabel: ariaParts.join(', ') };
   }
-
   let activeTurnBadgeEl = null;
 
   function clearTurnTooltipTimers() {
@@ -1017,6 +1092,7 @@
         hideTurnMetricsTooltip(false);
       });
     }
+    if (tt && tt.getAttribute('lang') !== (boot.locale || 'en')) tt.setAttribute('lang', boot.locale || 'en');
     return tt;
   }
 
@@ -1116,7 +1192,7 @@
           if (badge) badge.remove();
           continue;
         }
-        const { html, tooltipHtml } = formatTurnBadgeData(turn);
+        const { html, tooltipHtml, ariaLabel } = formatTurnBadgeData(turn);
         if (!html) {
           if (badge) badge.remove();
           continue;
@@ -1134,6 +1210,8 @@
           badge.innerHTML = html;
         }
         if (badge.hasAttribute('title')) badge.removeAttribute('title');
+        badge.setAttribute('lang', boot.locale || 'en');
+        if (badge.getAttribute('aria-label') !== ariaLabel) badge.setAttribute('aria-label', ariaLabel || 'Session usage');
         badge.__agTurnTtHtml = tooltipHtml;
         if (activeTurnBadgeEl === badge) {
           const tt = document.getElementById('ag-turn-metrics-tooltip');
