@@ -56,7 +56,7 @@ test('Thai translations preserve interpolation placeholders', () => {
 
 test('Thai runtime has locale-specific formatters for dynamic usage and accessibility text', () => {
   const runtime = fs.readFileSync(path.join(ROOT, 'core/runtime/60-i18n-engine.js'), 'utf8');
-  assert.match(runtime, /boot\\.locale === 'th-TH'/);
+  assert.match(runtime, /boot\.locale === 'th-TH'/);
   assert.match(runtime, /translateQuota/);
   assert.match(runtime, /RE_WINDOW_LIMIT_COMBINED/);
   assert.match(runtime, /RE_ARIA_MODEL/);
