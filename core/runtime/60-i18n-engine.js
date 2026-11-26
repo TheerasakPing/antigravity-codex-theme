@@ -461,7 +461,9 @@
       if (!trimmed) return null;
 
       // 1. 无原型静态词典 O(1) 精确匹配（多词附 Sentence/Title Case 大小写回退）+ 上下文消歧（附句尾句号自动回退；函数式 replace 防止 $&/$1 二次展开）
-      let replacement = resolveContextualDictTranslation(trimmed, contextEl, lookupRawDict(trimmed));
+      let replacement = boot.locale === 'zh-CN'
+        ? resolveContextualDictTranslation(trimmed, contextEl, lookupRawDict(trimmed))
+        : lookupRawDict(trimmed);
       if (typeof replacement !== 'string' && trimmed.endsWith('.')) {
         const withoutDot = lookupRawDict(trimmed.slice(0, -1));
         if (typeof withoutDot === 'string') {
@@ -474,6 +476,43 @@
         }
         return raw.replace(trimmed, () => replacement);
       }
+
+      // Locale-specific dynamic phrases. Never run the Chinese-only formatter for Thai or English.
+      if (boot.locale === 'th-TH') {
+        let m = trimmed.match(RE_PCT_LEFT);
+        if (m) return raw.replace(trimmed, () => m[1] + '% เหลืออยู่');
+        m = trimmed.match(RE_FILES_CHANGED);
+        if (m) return raw.replace(trimmed, () => 'เปลี่ยนแปลง ' + m[1] + ' ไฟล์');
+        m = trimmed.match(RE_TOOLS);
+        if (m) return raw.replace(trimmed, () => m[1] + ' เครื่องมือ');
+        m = trimmed.match(RE_UPDATES_COUNT);
+        if (m) return raw.replace(trimmed, () => m[1] + ' รายการอัปเดต');
+        m = trimmed.match(RE_PROJECTS_COUNT);
+        if (m) return raw.replace(trimmed, () => m[1] + ' โปรเจกต์');
+        m = trimmed.match(RE_ACTIVE_CONVS);
+        if (m) return raw.replace(trimmed, () => m[1] + ' แชตที่กำลังใช้งาน');
+        m = trimmed.match(RE_SEE_ALL);
+        if (m) return raw.replace(trimmed, () => 'ดูทั้งหมด (' + m[1] + ')');
+        m = trimmed.match(RE_REL_TIME);
+        if (m) {
+          const units = { s: 'วินาที', sec: 'วินาที', secs: 'วินาที', m: 'นาที', min: 'นาที', mins: 'นาที', h: 'ชั่วโมง', hr: 'ชั่วโมง', hrs: 'ชั่วโมง', d: 'วัน', w: 'สัปดาห์', mo: 'เดือน', y: 'ปี', yr: 'ปี', yrs: 'ปี' };
+          return raw.replace(trimmed, () => m[1] + ' ' + (units[m[2].toLowerCase()] || m[2]) + 'ที่แล้ว');
+        }
+        m = trimmed.match(RE_SHOW_BREAKDOWNS);
+        if (m) return raw.replace(trimmed, () => 'แสดงรายละเอียด ' + m[1] + ' รายการ');
+        m = trimmed.match(RE_SHOW_MORE_SUBAGENTS);
+        if (m) return raw.replace(trimmed, () => 'แสดง Subagents เพิ่มอีก ' + m[1] + ' ราย');
+        m = trimmed.match(RE_RUNNING_FOR);
+        if (m) return raw.replace(trimmed, () => 'ทำงานมาแล้ว ' + m[1]);
+        m = trimmed.match(RE_THINKING_FOR);
+        if (m) return raw.replace(trimmed, () => 'กำลังคิดมาแล้ว ' + m[1]);
+        m = trimmed.match(RE_THOUGHT_FOR);
+        if (m) return raw.replace(trimmed, () => 'ใช้เวลาคิด ' + m[1]);
+        m = trimmed.match(RE_WORKED_FOR);
+        if (m) return raw.replace(trimmed, () => 'ทำงานเป็นเวลา ' + m[1]);
+        return null;
+      }
+      if (boot.locale === 'en') return null;
 
       // 2. 快速短路：不含任何英文字母直接跳过动态正则
       if (!RE_HAS_ALPHA.test(trimmed)) return null;
