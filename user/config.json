@@ -1,5 +1,6 @@
 {
   "enabled": true,
+  "locale": "zh-CN",
   "channel": "auto",
   "preset": "codex-pure-white",
   "telemetryLayout": "compact",
