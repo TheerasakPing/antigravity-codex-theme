@@ -56,6 +56,7 @@ export const FEATURE_GROUPS = Object.freeze({
     ],
     coreRelPaths: [
       'i18n.json',
+      'locales/th-TH.json',
       'runtime/60-i18n-engine.js'
     ],
     aliases: ['i18n', 'zh', 'cn', 'chinese', 'th', 'thai', 'locale', 'l10n', 'translate']
