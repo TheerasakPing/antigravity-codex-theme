@@ -581,7 +581,7 @@
         m = trimmed.match(RE_SHOW_MORE_SUBAGENTS);
         if (m) return replace('แสดง Subagents เพิ่มอีก ' + m[1] + ' ราย');
         m = trimmed.match(RE_PERM_DELETE);
-        if (m) return replace('ลบ ' + m[1] + ' อย่างถาวร รวมถึงการสนทนาที่กำลังดำเนินอยู่ ' + m[2] + รายการ');
+        if (m) return replace('ลบ ' + m[1] + ' อย่างถาวร รวมถึงการสนทนาที่กำลังดำเนินอยู่ ' + m[2] + ' รายการ');
         m = trimmed.match(RE_WORKED_FOR_UPDATES);
         if (m) return replace('ทำงานมาแล้ว ' + formatDuration(m[1]) + ' · ' + m[2] + ' รายการอัปเดต');
         m = trimmed.match(RE_WORKED_FOR);
