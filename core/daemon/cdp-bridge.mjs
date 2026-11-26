@@ -938,6 +938,7 @@ export function createCdpManager({
                   version: cachedPatchVersion,
                   config: {
                     enabled: activeConfig.enabled,
+                    locale: activeConfig.locale || 'zh-CN',
                     telemetryLayout: activeConfig.telemetryLayout,
                     telemetryCacheMode: activeConfig.telemetryCacheMode,
                     promptSuggestionModel: activeConfig.promptSuggestionModel,
@@ -1008,6 +1009,7 @@ export function createCdpManager({
                   version: cachedPatchVersion,
                   config: {
                     enabled: activeConfig.enabled,
+                    locale: activeConfig.locale || 'zh-CN',
                     telemetryLayout: activeConfig.telemetryLayout,
                     telemetryCacheMode: activeConfig.telemetryCacheMode,
                     promptSuggestionModel: activeConfig.promptSuggestionModel,
