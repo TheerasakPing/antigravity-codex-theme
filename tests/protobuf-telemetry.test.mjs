@@ -23,9 +23,70 @@ const {
   fmtTok,
   computeSegPcts,
   buildInlineTelemetryHtml,
+  buildMetricsTooltipHtml,
+  localizeTelemetryHtml,
   buildTurnSummaries
 } = await import('../core/daemon/telemetry-renderer.mjs');
 
+test("localizeTelemetryHtml translates the complete metrics hover card to Thai", () => {
+  const metrics = {
+    genIdx: 71,
+    streamTps: 236.9,
+    e2eTps: 120.6,
+    streamTpsValid: true,
+    last: {
+      idx: 70,
+      ctx: 238038,
+      cacheWrite: 0,
+      inTok: 3024,
+      cacheRead: 235014,
+      ttft: 1.1,
+      stream: 8.89,
+      totDur: 9.99,
+      outTok: 2400,
+      thinkTok: 500,
+      respTok: 1900
+    },
+    lastCacheRate: "98.7",
+    ctxPct: 46,
+    contextLimitTokens: 512000,
+    limitKStr: "512k",
+    remainCtx: 273962,
+    compactedPending: false,
+    compactSummaryKb: 0,
+    compactingNow: false,
+    generatingPending: false,
+    pendingRetrying: false,
+    lastErrorMsg: "",
+    turnSteps: 3,
+    turnOut: 1200,
+    turnThink: 200,
+    turnResp: 1000,
+    turnDur: 3.5,
+    userStepsCount: 6,
+    validCount: 71,
+    totalIn: 3024,
+    totalCacheWrite: 0,
+    totalCache: 235014,
+    totalPrompt: 238038,
+    sessionCacheRate: "79.9",
+    totalOut: 2400,
+    totalThink: 500,
+    totalResp: 1900
+  };
+  const tooltip = localizeTelemetryHtml(buildMetricsTooltipHtml(metrics), "th-TH");
+  assert.match(tooltip, /สถิติการเรียกใช้ล่าสุด/);
+  assert.match(tooltip, /ความเร็วสร้าง/);
+  assert.match(tooltip, /เฉลี่ยรวม 120\.6/);
+  assert.match(tooltip, /บริบท/);
+  assert.match(tooltip, /อัตราแคชสะสม/);
+  assert.match(tooltip, /ดูรายละเอียด/);
+  assert.match(tooltip, /รวมรอบนี้/);
+  assert.match(tooltip, /สตรีม/);
+  assert.doesNotMatch(tooltip, /[\u3400-\u9fff]/);
+  const sample = "本轮最新调用 · 生成速度 · 端到端 120.6 · Ctx 46% · Cache 79.9% · 展开明细";
+  assert.equal(localizeTelemetryHtml(sample, "zh-CN"), sample);
+});
 function encodeVarint(num) {
   const bytes = [];
   let n = BigInt(num);

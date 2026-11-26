@@ -4,10 +4,6 @@
   "minNodeVersion": "22.13.0",
   "fullMetricsNodeVersion": "22.13.0",
   "files": {
-    "daemon.mjs": {
-      "sha256": "ae5351637858a4c9e4b0fd64762feb05c43988b335a14d141301b029dc4577d2",
-      "bytes": 5269
-    },
     "daemon/cdp-bridge.mjs": {
       "sha256": "892341ae296a0491a1eb4a6f385810481a5a0761e50eee9f8d72bd9136333fde",
       "bytes": 51581
@@ -19,6 +15,10 @@
     "daemon/ls-log.mjs": {
       "sha256": "bc81e76d861392490903eede432ecc64913acb8617835cc7aa01b74fb0509834",
       "bytes": 2123
+    },
+    "daemon.mjs": {
+      "sha256": "ae5351637858a4c9e4b0fd64762feb05c43988b335a14d141301b029dc4577d2",
+      "bytes": 5269
     },
     "daemon/paths.mjs": {
       "sha256": "511bd1c8fe7f2421c2439a3cc36f0fe17ed9348102745c9c6cb0561801be4589",
@@ -33,16 +33,16 @@
       "bytes": 7683
     },
     "daemon/sqlite-metrics.mjs": {
-      "sha256": "b15ba8b56e50d56a58cdf4fab367ab8019991052b42dd9d73ddafcadc81284d7",
-      "bytes": 21971
+      "sha256": "e915998793d5212a5c9d328619f4eb6c061417146e7a195ab81ad7c284a2bea7",
+      "bytes": 22174
     },
     "daemon/ssh-remote.mjs": {
       "sha256": "6be0da34d9b0a78449ed34bceba5b11c087d884d9c6fa1519b1502052b49ab1a",
       "bytes": 33526
     },
     "daemon/telemetry-renderer.mjs": {
-      "sha256": "186e438512a681e2eccbbdbc15f771ce30f7602af6a27f5d56ee6dda1d636ef7",
-      "bytes": 19694
+      "sha256": "86d45c6fdcc3ef3013d7acd55c67cf4ca8d37a89114aed098428a33d8b4805a9",
+      "bytes": 23793
     },
     "daemon/updater.mjs": {
       "sha256": "a2f1d2b52d52f7aa5905d07791842552e40ac02035bfc6527f0f25b957d30e1a",
@@ -71,6 +71,10 @@
     "installer/service.mjs": {
       "sha256": "9f4d8dd42c9d27a215b12d037694d1eae7078d4839beb18ab8995cfe64b491b8",
       "bytes": 16866
+    },
+    "locales/th-TH.json": {
+      "sha256": "5caf357d1bba36d1d7f8282c2da32d4afccdae6f1527147acc9967b552d38741",
+      "bytes": 202117
     },
     "runtime/00-head.js": {
       "sha256": "fda58042503b469848dae2bc890b6b3a42194116db480da404b437bf541b8935",
@@ -139,10 +143,6 @@
     "styles/45-settings-ui.css": {
       "sha256": "4ce253e7937b9461e8bbbc88e278bb29d377001bafe61550f07123cbad82442a",
       "bytes": 25573
-    },
-    "locales/th-TH.json": {
-      "sha256": "5caf357d1bba36d1d7f8282c2da32d4afccdae6f1527147acc9967b552d38741",
-      "bytes": 202117
     }
   }
 }

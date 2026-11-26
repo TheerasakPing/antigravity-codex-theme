@@ -17,7 +17,8 @@ import {
   formatContextLimitLabel,
   buildInlineTelemetryHtml,
   buildMetricsTooltipHtml,
-  buildTurnSummaries
+  buildTurnSummaries,
+  localizeTelemetryHtml
 } from './telemetry-renderer.mjs';
 
 export function getDbSignature(cascadeId, conversationsDir) {
@@ -78,9 +79,10 @@ export function createMetricsReader({ getDatabaseSync, getConfig }) {
     const fallbackLim = cfg.fallbackContextLimit || 256000;
     const telemetryLayout = cfg.telemetryLayout === 'detailed' ? 'detailed' : 'compact';
     const telemetryCacheMode = cfg.telemetryCacheMode === 'step' ? 'step' : 'session';
+    const locale = cfg.locale === 'th-TH' || cfg.locale === 'en' ? cfg.locale : 'zh-CN';
     const lsLogFile = extraOpts && typeof extraOpts.lsLogFile === 'string' ? extraOpts.lsLogFile : '';
     const lsSig = extraOpts && typeof extraOpts.lsSig === 'string' ? extraOpts.lsSig : '';
-    const sig = `${rawDbSig}|lim:${manualLim}:${fallbackLim}|ly:${telemetryLayout}:${telemetryCacheMode}${lsSig ? `|ls:${lsSig}` : ''}`;
+    const sig = "locale:" + locale + "|" + `${rawDbSig}|lim:${manualLim}:${fallbackLim}|ly:${telemetryLayout}:${telemetryCacheMode}${lsSig ? `|ls:${lsSig}` : ''}`;
 
     const cached = metricsCache.get(dbPath);
     if (cached && cached.sig === sig) {
@@ -438,7 +440,7 @@ export function createMetricsReader({ getDatabaseSync, getConfig }) {
       const statusDotHtml = `<span class="${statusDotClass}" aria-label="${safeDotTitle}"></span>`;
 
       const turns = buildTurnSummaries(valid, userStepIdxs, manualLim, fallbackLim);
-      const inlineHtml = buildInlineTelemetryHtml({
+      const inlineHtml = localizeTelemetryHtml(buildInlineTelemetryHtml({
         telemetryLayout,
         telemetryCacheMode,
         statusDotHtml,
@@ -452,10 +454,10 @@ export function createMetricsReader({ getDatabaseSync, getConfig }) {
         outTok: last.outTok,
         lastCacheRate,
         sessionCacheRate
-      });
+      }), locale);
 
       const streamTpsValid = streamTps > 0 && streamTps <= MAX_SANITY_STREAM_TPS;
-      const tooltipHtml = buildMetricsTooltipHtml({
+      const tooltipHtml = localizeTelemetryHtml(buildMetricsTooltipHtml({
         genIdx: last.idx + 1,
         streamTps,
         e2eTps,
@@ -487,7 +489,7 @@ export function createMetricsReader({ getDatabaseSync, getConfig }) {
         totalOut,
         totalThink,
         totalResp
-      });
+      }), locale);
 
       const payload = {
         cid: cascadeId,
