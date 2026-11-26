@@ -883,7 +883,6 @@
   "Interrupt the agent and send immediately": "ขัดจังหวะ Agent แล้วส่งข้อความทันที",
   "Queue until after the current turn.": "เข้าคิวไว้และส่งหลังจากรอบการทำงานปัจจุบันเสร็จ",
   "Queue until after the current turn": "เข้าคิวไว้และส่งหลังจากรอบการทำงานปัจจุบันเสร็จ",
-  "Controls whether terminal commands require your approval before running.\\n\\nNote: A change to this setting will only apply to new messages sent to the agent. In-progress responses will use the previous setting value.": "กำหนดว่าต้องขออนุมัติจากคุณก่อนรันคำสั่ง Terminal หรือไม่\n\nหมายเหตุ: การเปลี่ยนค่านี้จะมีผลกับข้อความใหม่ที่ส่งให้ Agent เท่านั้น งานที่กำลังดำเนินอยู่จะยังใช้ค่าเดิม",
   "Note: A change to this setting will only apply to new messages sent to the agent. In-progress responses will use the previous setting value.": "หมายเหตุ: การเปลี่ยนค่านี้จะมีผลกับข้อความใหม่ที่ส่งให้ Agent เท่านั้น งานที่กำลังดำเนินอยู่จะยังใช้ค่าเดิม",
   "Sidebar": "แถบด้านข้าง",
   "More actions": "การดำเนินการเพิ่มเติม",
