@@ -97,8 +97,8 @@
       "bytes": 58328
     },
     "runtime/60-i18n-engine.js": {
-      "sha256": "457b38479ea5746e8c66deb645fd81ed95238d7b49073870e0dd5e5359998647",
-      "bytes": 45673
+      "sha256": "846b9d531d857ee382a8335012375e294b2df5f1453516ffb0570d55a29103e2",
+      "bytes": 60869
     },
     "runtime/70-prompt-suggestions.js": {
       "sha256": "ec3967100ca7f28c1e59073e8294f80bc432dc45414469946197a6a3e344e545",
@@ -141,8 +141,8 @@
       "bytes": 25573
     },
     "locales/th-TH.json": {
-      "sha256": "94ab88493b9afdda09e0377ec6fbd9784e8ed94554606f49f36d649efd2e3d39",
-      "bytes": 13043
+      "sha256": "5caf357d1bba36d1d7f8282c2da32d4afccdae6f1527147acc9967b552d38741",
+      "bytes": 202117
     }
   }
 }
