@@ -273,7 +273,8 @@ antigravity-codex-theme/
 │   ├── installer/              # 模块分组 / Manifest 校验打包 / 环境探测 / 跨平台自启与 CDP 管理
 │   ├── daemon.mjs              # 后台服务入口
 │   ├── shared.mjs              # 公共工具函数
-│   ├── i18n.json               # 1,900+ 界面词典
+│   ├── i18n.json               # 1,900+ 简体中文界面词典
+│   ├── locales/                 # 多语言词典（当前含 th-TH）
 │   └── manifest.json           # core/ 文件完整性哈希清单
 ├── tests/                      # 61 项 node:test 单元测试
 ├── user/                       # 个人配置与热重载目录
