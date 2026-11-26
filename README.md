@@ -136,7 +136,7 @@ node install.mjs install --only i18n --minimal
 | `node install.mjs sparse-paths --only <features>` | แสดงรายการพาธไฟล์ของชุดโมดูลที่เลือก |
 | `node install.mjs rollback` | ย้อนกลับไปใช้ `core/` เวอร์ชันที่สำรองไว้ก่อนหน้า |
 | `node install.mjs uninstall` | หยุดบริการ ล้างรายการเริ่มทำงานอัตโนมัติและพารามิเตอร์เริ่มแอป พร้อมคืน UI ภาษาอังกฤษและ Style ดั้งเดิม |
-| `npm run check` / `npm test` | ตรวจ Syntax ของไฟล์ `.mjs` ทั้งหมดและ Frontend Script ที่ประกอบแล้ว พร้อมรัน Unit Test จำนวน 61 รายการผ่าน `node:test` |
+| `npm run check` / `npm test` | ตรวจ Syntax ของไฟล์ `.mjs` ทั้งหมดและ Frontend Script ที่ประกอบแล้ว พร้อมรัน Unit Test จำนวน 82 รายการด้วย `node:test` |
 
 </details>
 
@@ -244,7 +244,7 @@ Dictionary ภาษาจีนตัวย่อมีคำแปลในต
 
 ### ปรับแต่ง Source Code (`core/`)
 
-Source Code หลักแบ่งออกเป็น 34 โมดูลอิสระ พร้อม Unit Test จำนวน 61 รายการผ่าน `node:test`:
+Source Code หลักแบ่งออกเป็น 34 โมดูลอิสระ พร้อม Unit Test จำนวน 82 รายการด้วย `node:test`:
 
 | ส่วนที่ต้องการปรับแต่ง | ไฟล์ที่เกี่ยวข้อง |
 | :--- | :--- |
@@ -276,7 +276,7 @@ antigravity-codex-theme/
 │   ├── i18n.json               # Dictionary UI ภาษาจีนตัวย่อ 1,900+ รายการ
 │   ├── locales/                 # Dictionary หลายภาษา (ปัจจุบันมี th-TH)
 │   └── manifest.json           # Hash Manifest สำหรับตรวจสอบความสมบูรณ์ของไฟล์ core/
-├── tests/                      # Unit Test จำนวน 61 รายการ ผ่าน node:test
+├── tests/                      # Unit Test จำนวน 82 รายการด้วย node:test
 ├── user/                       # ไดเรกทอรีการตั้งค่าส่วนบุคคลและ Hot Reload
 ├── install.mjs                 # CLI สำหรับติดตั้ง อัปเดต รีสตาร์ต และดูแลระบบ
 ├── SKILL.md                    # คู่มือการทำงานสำหรับ AI Agent
@@ -302,13 +302,13 @@ antigravity-codex-theme/
 
 ในช่วงศึกษาการ Inject ผ่าน CDP Runtime ของ Antigravity, การแทนที่ข้อความใน DOM โดยใช้ `WeakMap`, การอ่าน SQLite แบบ Incremental และกลไกส่งต่อการเริ่มแอปด้วย `--remote-debugging-port=0` สำหรับรุ่น `2.33.0` โครงการนี้ได้รับแรงบันดาลใจและอ้างอิงแนวทางจาก [Anarcadia/chuanban-antigravity-theme-patch](https://github.com/Anarcadia/chuanban-antigravity-theme-patch) (MIT) จึงขอขอบคุณไว้ ณ ที่นี้ด้วย
 
-โครงการนี้ได้เขียนสถาปัตยกรรมหลักขึ้นใหม่และต่อยอดความสามารถเพิ่มเติม ได้แก่ 34 โมดูลอิสระ พร้อม Unit Test 61 รายการและ CI, ธีม Codex สว่าง/มืดที่ไม่พึ่งพาฟอนต์ภายนอก, แผงตั้งค่า **Codex Theme** แบบฝังในแอปพร้อมระบบตรวจสอบอัปเดต, State Machine สถานะเซสชัน 4 รูปแบบ พร้อมแผงสถิติระดับ 1/2 และการ์ดรายละเอียดแบบ Hover ในแต่ละรอบ, SSH Remote แบบอ่านอย่างเดียวและระบบคาดการณ์ข้อความที่เลือกเปิดใช้ได้ รวมถึงการติดตั้งเฉพาะโมดูลด้วย `--only` และการแยกการตั้งค่าส่วนบุคคลใน `user/` เพื่อรองรับ Hot Reload
+โครงการนี้ได้เขียนสถาปัตยกรรมหลักขึ้นใหม่และต่อยอดความสามารถเพิ่มเติม ได้แก่ 34 โมดูลอิสระ พร้อม Unit Test 82 รายการและ CI, ธีม Codex สว่าง/มืดที่ไม่พึ่งพาฟอนต์ภายนอก, แผงตั้งค่า **Codex Theme** แบบฝังในแอปพร้อมระบบตรวจสอบอัปเดต, State Machine สถานะเซสชัน 4 รูปแบบ พร้อมแผงสถิติระดับ 1/2 และการ์ดรายละเอียดแบบ Hover ในแต่ละรอบ, SSH Remote แบบอ่านอย่างเดียวและระบบคาดการณ์ข้อความที่เลือกเปิดใช้ได้ รวมถึงการติดตั้งเฉพาะโมดูลด้วย `--only` และการแยกการตั้งค่าส่วนบุคคลใน `user/` เพื่อรองรับ Hot Reload
 
 เผยแพร่ภายใต้ [MIT License](LICENSE) สามารถ Fork และนำไปปรับแต่งต่อได้ตามต้องการ
 
 ## English Overview
 
-`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
+`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 82 `node:test` test cases (requires Node.js `>= 22.13.0`).
 
 - **Codex Light & Dark Themes**: Pure white (`codex-pure-white`) and charcoal dark (`codex-dark`) palettes with zero external font dependencies and automatic light/dark switching.
 - **Embedded Settings Panel & Self-Updater**: Mounts directly under **Settings → Codex Theme** to toggle modules, select prompt-suggestion models & thinking effort tiers via a 2-level `agy models` cascading menu, edit `sshHosts`, trigger manual hot-reloads, and check/apply in-panel updates (`node install.mjs update`) with integrity verification and automatic `core.prev/` rollback backups while preserving `user/`.
