@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   parseFeatureSelection,
   getSparseCheckoutPaths,
@@ -252,7 +252,7 @@ test('core/daemon.mjs loads cleanly in a minimal sparse copy without metrics fil
         '--input-type=module',
         '-e',
         `process.env.AG_DAEMON_LIBRARY = '1'; const m = await import(${JSON.stringify(
-          path.join(coreDst, 'daemon.mjs')
+          pathToFileURL(path.join(coreDst, 'daemon.mjs')).href
         )}); console.log(JSON.stringify({ ok: true, emptyParse: m.parseConversationMetrics('x', '.') }));`
       ],
       { encoding: 'utf8' }
