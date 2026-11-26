@@ -2,20 +2,20 @@
 
 <h1>antigravity-codex-theme</h1>
 
-<p><strong>Google Antigravity 的 Codex 昼夜主题、多语言界面、原生设置面板与实时会话统计插件</strong></p>
+<p><strong>ธีม Codex สำหรับ Google Antigravity ทั้งโหมดสว่างและมืด พร้อม UI หลายภาษา แผงตั้งค่าแบบ Native และระบบสถิติเซสชันแบบเรียลไทม์</strong></p>
 
 <p>
-  <a href="#快速安装">快速安装</a> ·
-  <a href="#按需安装">按需安装</a> ·
-  <a href="#功能详解">功能详解</a> ·
-  <a href="#自定义与卸载">自定义与卸载</a> ·
-  <a href="#致谢与协议">致谢与协议</a> ·
+  <a href="#ติดตั้งอย่างรวดเร็ว">ติดตั้งอย่างรวดเร็ว</a> ·
+  <a href="#ติดตั้งเฉพาะโมดูล">ติดตั้งเฉพาะโมดูล</a> ·
+  <a href="#รายละเอียดความสามารถ">รายละเอียดความสามารถ</a> ·
+  <a href="#ปรับแต่งและถอนการติดตั้ง">ปรับแต่งและถอนการติดตั้ง</a> ·
+  <a href="#เครดิตและสัญญาอนุญาต">เครดิตและสัญญาอนุญาต</a> ·
   <a href="#english-overview">English</a>
 </p>
 
 <p>
-  不修改安装包，通过本地 CDP 实时注入 Codex 昼夜主题、多语言界面、嵌入式设置面板与四态用量统计。<br>
-  34 个独立模块，支持 <code>--only</code> 按需安装、面板内检查并直接更新与 Fork 自由定制。
+  ติดตั้งโดยไม่แก้ไขไฟล์แพ็กเกจของแอป ใช้ Local CDP ฉีดธีม Codex โหมดสว่าง/มืด UI หลายภาษา แผงตั้งค่าแบบฝังในแอป และสถิติการใช้งาน 4 สถานะแบบเรียลไทม์<br>
+  แบ่งเป็น 34 โมดูลอิสระ รองรับการติดตั้งเฉพาะส่วนด้วย <code>--only</code> ตรวจสอบและอัปเดตได้จากแผงตั้งค่า พร้อมเปิดให้ Fork ไปปรับแต่งได้อย่างอิสระ
 </p>
 
 <p>
@@ -28,38 +28,38 @@
 </p>
 
 <p>
-  <a href="#命令行安装"><img src="https://img.shields.io/static/v1?label=CLI%20INSTALL&message=v1.3.5&color=2B7FFF&style=for-the-badge&labelColor=181818&logo=gnubash&logoColor=white" alt="CLI Install"></a>
-  <a href="#ai-一键安装"><img src="https://img.shields.io/static/v1?label=AI%20ONE-CLICK&message=SKILL.md&color=0D9488&style=for-the-badge&labelColor=181818&logo=googlegemini&logoColor=white" alt="AI One-Click Install"></a>
-  <a href="#按需安装"><img src="https://img.shields.io/static/v1?label=SELECTIVE%20INSTALL&message=--only&color=6366F1&style=for-the-badge&labelColor=181818&logo=codesandbox&logoColor=white" alt="Selective Install"></a>
+  <a href="#ติดตั้งผ่าน-command-line"><img src="https://img.shields.io/static/v1?label=CLI%20INSTALL&message=v1.3.5&color=2B7FFF&style=for-the-badge&labelColor=181818&logo=gnubash&logoColor=white" alt="CLI Install"></a>
+  <a href="#ติดตั้งด้วย-ai-ในคลิกเดียว"><img src="https://img.shields.io/static/v1?label=AI%20ONE-CLICK&message=SKILL.md&color=0D9488&style=for-the-badge&labelColor=181818&logo=googlegemini&logoColor=white" alt="AI One-Click Install"></a>
+  <a href="#ติดตั้งเฉพาะโมดูล"><img src="https://img.shields.io/static/v1?label=SELECTIVE%20INSTALL&message=--only&color=6366F1&style=for-the-badge&labelColor=181818&logo=codesandbox&logoColor=white" alt="Selective Install"></a>
 </p>
 
 </div>
 
 https://github.com/user-attachments/assets/749990f3-f2ce-48e7-8f66-3d7c88a7d49d
 
-![Codex 浅色与深色模式对比](assets/light-dark-themes.png)
+![เปรียบเทียบธีม Codex โหมดสว่างและโหมดมืด](assets/light-dark-themes.png)
 
-| 模块 | 核心能力 | 启用方式 |
+| โมดูล | ความสามารถหลัก | สถานะเริ่มต้น |
 | :--- | :--- | :--- |
-| **Codex 昼夜主题** | 纯白浅色 (`codex-pure-white`) 与中性炭灰深色 (`codex-dark`)，无外部字体依赖，随 IDE 外观自动切换 | 默认开启 |
-| **原生设置面板与更新** | 直接嵌入 **设置 → Codex 主题**，可视化管理开关、模型档位、`sshHosts`、手动刷新与 **检查并直接更新** | 默认内置 |
-| **会话状态与用量统计** | 底部四态指示与一/二级用量面板、每轮悬浮详情卡，覆盖主对话、旁路提问与可选 **SSH Remote** | 默认开启（SSH 可选） |
-| **多语言界面本地化** | 支持 English、简体中文与泰语；泰语采用自然开发者用语，保留 Agent / Token / Workspace / MCP 等术语 | 默认开启 |
-| **输入框下一句预测** | 回复结束后在空输入框显示 Ghost Text，按 `Tab` / `→` 补全，内置 `agy models` 二级级联模型选择 | **默认关闭**（按需开启） |
+| **ธีม Codex สว่าง/มืด** | ธีมสว่างสีขาวสะอาดตา (`codex-pure-white`) และธีมมืดสีเทาถ่านแบบเป็นกลาง (`codex-dark`) ไม่ต้องพึ่งพาฟอนต์ภายนอก และปรับตามรูปลักษณ์ของ IDE โดยอัตโนมัติ | เปิดใช้งาน |
+| **แผงตั้งค่า Native และระบบอัปเดต** | ฝังหน้า **Settings → Codex Theme** เพื่อจัดการโมดูล ระดับโมเดล `sshHosts` สั่งรีเฟรชด้วยตนเอง และ **ตรวจสอบพร้อมติดตั้งอัปเดตได้ทันที** | มีมาให้ในตัว |
+| **สถานะเซสชันและสถิติการใช้งาน** | ตัวบ่งชี้สถานะ 4 รูปแบบ แผงแสดงการใช้งานระดับ 1/2 และการ์ดรายละเอียดเมื่อชี้แต่ละรอบการสนทนา รองรับแชตหลัก Side Question และ **SSH Remote** แบบเลือกเปิดใช้ | เปิดใช้งาน (SSH เป็นตัวเลือก) |
+| **ระบบแปลภาษา UI** | รองรับ English, 简体中文 และภาษาไทย โดยภาษาไทยใช้สำนวนธรรมชาติที่เหมาะกับนักพัฒนา และคงคำศัพท์เทคนิค เช่น Agent / Token / Workspace / MCP | เปิดใช้งาน |
+| **ระบบคาดการณ์ข้อความถัดไป** | แสดง Ghost Text ในช่องพิมพ์ที่ว่างหลัง AI ตอบเสร็จ กด `Tab` / `→` เพื่อเติมข้อความ พร้อมเมนูเลือกโมเดลแบบลำดับชั้น 2 ระดับผ่าน `agy models` | **ปิดไว้เป็นค่าเริ่มต้น** (เปิดเองได้) |
 
-## 快速安装
+## ติดตั้งอย่างรวดเร็ว
 
-> **前置要求**：**Node.js >= 22.13.0**（见 [package.json](package.json)）与 Google Antigravity（`2.30.x` ~ `2.35.1+`），已完成 **macOS / Windows / Linux** 桌面端实机安装与卸载验证。插件仅部署至 `~/.gemini/antigravity/codex-theme`，**不修改应用安装包**；若安装前应用已在无调试端口状态下运行，重启一次或在外部终端运行 `node install.mjs relaunch` 即可生效。
+> **ข้อกำหนดก่อนติดตั้ง**: ต้องมี **Node.js >= 22.13.0** (ดู [package.json](package.json)) และ Google Antigravity รุ่น `2.30.x` ถึง `2.35.1+` ผ่านการทดสอบติดตั้งและถอนการติดตั้งบนเดสก์ท็อป **macOS / Windows / Linux** แล้ว Plugin จะติดตั้งเฉพาะใน `~/.gemini/antigravity/codex-theme` โดย **ไม่แก้ไขไฟล์แพ็กเกจของแอป** หากเปิดแอปไว้ก่อนติดตั้งโดยไม่มี Debug Port ให้รีสตาร์ตแอปหนึ่งครั้ง หรือรัน `node install.mjs relaunch` จาก Terminal ภายนอก
 
 <details>
-<summary>查看各平台实测细节与 Antigravity 2.33.0+ 调试端口说明</summary>
+<summary>ดูรายละเอียดการทดสอบแต่ละแพลตฟอร์มและคำอธิบาย Debug Port สำหรับ Antigravity 2.33.0+</summary>
 
-- **实机验证范围**：覆盖 Antigravity `2.31.0` / `2.32.1` / `2.33.0` / `2.34.0` / `2.35.1`，包括 macOS `LaunchAgent`、Windows `schtasks` / VBS / 注册表与 `.lnk` 参数配置、Linux `systemd --user` 与 `.desktop` 启动项；GitHub Actions CI 在 `ubuntu-latest` 上持续执行 `npm run check` 与 `npm test`。
-- **Antigravity `2.33.0+` 适配**：新版本默认关闭本地 `DevToolsActivePort`，需携带 `--remote-debugging-port=0` 启动。macOS 默认采用单图标模式，后台服务仅在冷启动前 `12s`（自动更新重启时 `25s`）内补参接力重启，不中断运行中的会话；Windows 与 Linux 自动为快捷方式或 `.desktop` 追加参数，并兼容写入 `~/.antigravity/argv.json`。
+- **ขอบเขตการทดสอบบนเครื่องจริง**: ครอบคลุม Antigravity รุ่น `2.31.0` / `2.32.1` / `2.33.0` / `2.34.0` / `2.35.1` รวมถึง macOS `LaunchAgent`, Windows `schtasks` / VBS / Registry และการกำหนดพารามิเตอร์ในไฟล์ `.lnk`, Linux `systemd --user` และรายการเปิดแอปจาก `.desktop`; GitHub Actions CI ทำงานบน `ubuntu-latest` อย่างต่อเนื่อง โดยรัน `npm run check` และ `npm test`
+- **การรองรับ Antigravity `2.33.0+`**: รุ่นใหม่ปิด `DevToolsActivePort` ภายในเครื่องไว้เป็นค่าเริ่มต้น จึงต้องเริ่มแอปพร้อม `--remote-debugging-port=0` บน macOS ใช้โหมดไอคอนเดียวเป็นค่าเริ่มต้น โดยบริการเบื้องหลังจะเติมพารามิเตอร์และส่งต่อการรีสตาร์ตเฉพาะช่วงก่อน Cold Start ไม่เกิน `12s` (หรือ `25s` เมื่อรีสตาร์ตจากการอัปเดตอัตโนมัติ) โดยไม่รบกวนเซสชันที่กำลังทำงาน ส่วน Windows และ Linux จะเพิ่มพารามิเตอร์ให้ Shortcut หรือไฟล์ `.desktop` โดยอัตโนมัติ และรองรับการเขียนค่าใน `~/.antigravity/argv.json`
 
 </details>
 
-### 命令行安装
+### ติดตั้งผ่าน Command Line
 
 ```bash
 git clone https://github.com/nkjDSLcvanv/antigravity-codex-theme.git
@@ -68,33 +68,33 @@ node install.mjs install
 node --disable-warning=ExperimentalWarning install.mjs doctor
 ```
 
-### AI 一键安装
+### ติดตั้งด้วย AI ในคลิกเดียว
 
-将下面这段提示词直接发给 Antigravity、Claude Code、Codex 或 Cursor：
+คัดลอก Prompt ด้านล่างแล้วส่งให้ Antigravity, Claude Code, Codex หรือ Cursor:
 
-> 请读取 `https://github.com/nkjDSLcvanv/antigravity-codex-theme.git`，使用 `git clone --depth=1 --filter=blob:none --sparse` 拉取核心文件（参考仓库内的 `SKILL.md`，跳过 `assets/` 和 `tests/`；如需只装部分功能可追加 `--only` 参数），运行 `node install.mjs install`、`node --disable-warning=ExperimentalWarning install.mjs doctor` 和 `verify` 完成安装并确认实时注入正常。
+> โปรดอ่าน Repository จาก `https://github.com/nkjDSLcvanv/antigravity-codex-theme.git` แล้วใช้ `git clone --depth=1 --filter=blob:none --sparse` เพื่อดึงเฉพาะไฟล์หลัก (อ้างอิง `SKILL.md` ภายใน Repository และข้าม `assets/` กับ `tests/`; หากต้องการติดตั้งเฉพาะบางความสามารถ สามารถเพิ่มพารามิเตอร์ `--only` ได้) จากนั้นรัน `node install.mjs install`, `node --disable-warning=ExperimentalWarning install.mjs doctor` และ `verify` เพื่อติดตั้งและตรวจสอบว่าระบบ Inject ทำงานแบบเรียลไทม์ได้ตามปกติ
 
-### 按需安装
+### ติดตั้งเฉพาะโมดูล
 
-通过 `--only` 从 `theme`、`i18n`、`metrics`、`fixes`（默认）以及 `suggest`（可选，默认关闭）中按需组合：
+ใช้ `--only` เพื่อเลือกผสมโมดูลจาก `theme`, `i18n`, `metrics`, `fixes` (ติดตั้งเป็นค่าเริ่มต้น) และ `suggest` (โมดูลเสริม ปิดไว้เป็นค่าเริ่มต้น):
 
 ```bash
-# 示例：仅启用中文界面与实时统计，保留 Antigravity 原生配色
+# ตัวอย่าง: เปิดเฉพาะ UI ภาษาจีนและสถิติการใช้งานแบบเรียลไทม์ โดยคงชุดสีดั้งเดิมของ Antigravity
 node install.mjs install --only i18n,metrics
 ```
 
 <details>
-<summary>查看模块列表与精简拉取命令（跳过截图或单模块下载）</summary>
+<summary>ดูรายการโมดูลและคำสั่ง Sparse Checkout สำหรับติดตั้งแบบลดขนาด (ไม่ดาวน์โหลดภาพหรือเลือกเพียงโมดูลเดียว)</summary>
 
-| 模块 | 说明 |
+| โมดูล | รายละเอียด |
 | :--- | :--- |
-| `theme` | Codex 浅色 (`codex-pure-white`) 与深色 (`codex-dark`) 昼夜主题 |
-| `i18n` | 中文界面本地化（`1,900+` 条词条，`WeakMap` 原地更新） |
-| `metrics` | 实时会话状态指示、一/二级用量面板与每轮尾部统计（含旁路提问与可选 SSH Remote） |
-| `fixes` | 设置弹窗路由死锁修复与 `Cmd/Ctrl + -/=/0` 界面缩放快捷键 |
-| `suggest` | 输入框下一句预测（Ghost Text + `Tab` / `→` 补全，默认关闭） |
+| `theme` | ธีม Codex โหมดสว่าง (`codex-pure-white`) และโหมดมืด (`codex-dark`) |
+| `i18n` | ระบบแปล UI หลายภาษา (1,900+ รายการ พร้อมการอัปเดตข้อความใน DOM ผ่าน `WeakMap`) |
+| `metrics` | ตัวบ่งชี้สถานะเซสชันแบบเรียลไทม์ แผงแสดงการใช้งานระดับ 1/2 และสรุปสถิติท้ายแต่ละรอบ (รวม Side Question และ SSH Remote ที่เลือกเปิดใช้) |
+| `fixes` | แก้ปัญหา Route Deadlock ในหน้าต่าง Settings และเพิ่มคีย์ลัดปรับขนาด UI `Cmd/Ctrl + -/=/0` |
+| `suggest` | คาดการณ์ข้อความถัดไปในช่องพิมพ์ (Ghost Text + เติมข้อความด้วย `Tab` / `→`) ปิดไว้เป็นค่าเริ่มต้น |
 
-**1. 跳过 `assets/` 与 `tests/`，仅拉取核心代码（全平台通用）：**
+**1. ข้าม `assets/` และ `tests/` เพื่อดึงเฉพาะ Source Code หลัก (ใช้ได้ทุกแพลตฟอร์ม):**
 
 ```bash
 git clone --depth=1 --filter=blob:none --sparse https://github.com/nkjDSLcvanv/antigravity-codex-theme.git
@@ -103,10 +103,10 @@ git sparse-checkout set core user
 node install.mjs install --only i18n,metrics
 ```
 
-**2. 仅下载目标模块文件（`--no-cone` 单模块拉取，适用于 macOS / Linux / Git Bash）：**
+**2. ดาวน์โหลดเฉพาะไฟล์ของโมดูลที่ต้องการ (ใช้ `--no-cone` สำหรับ Sparse Checkout รายไฟล์ เหมาะกับ macOS / Linux / Git Bash):**
 
 ```bash
-# 示例：仅下载并安装中文界面模块 (i18n)
+# ตัวอย่าง: ดาวน์โหลดและติดตั้งเฉพาะโมดูลภาษา UI (i18n)
 git clone --depth=1 --filter=blob:none --sparse https://github.com/nkjDSLcvanv/antigravity-codex-theme.git
 cd antigravity-codex-theme
 git sparse-checkout set --no-cone \
@@ -119,81 +119,81 @@ git sparse-checkout set --no-cone \
 node install.mjs install --only i18n --minimal
 ```
 
-也可通过 `node install.mjs sparse-paths --only theme,metrics` 查询任意模块组合对应的文件列表。
+สามารถใช้ `node install.mjs sparse-paths --only theme,metrics` เพื่อดูรายการพาธไฟล์ที่ต้องใช้สำหรับชุดโมดูลที่เลือกได้เช่นกัน
 
 </details>
 
 <details>
-<summary>查看常用运维、更新、回滚与测试命令</summary>
+<summary>ดูคำสั่งดูแลระบบ อัปเดต ย้อนกลับเวอร์ชัน และทดสอบที่ใช้บ่อย</summary>
 
-| 命令 | 用途 |
+| คำสั่ง | รายละเอียดการทำงาน |
 | :--- | :--- |
-| `node install.mjs install [--channel auto\|stable\|insiders] [--only <features>] [--minimal] [--with-launcher] [--sync-user]` | 部署插件并注册后台自启服务 |
-| `node install.mjs update [--check] [--ref <branch\|tag>]` | 检查 GitHub 更新并直接升级（校验文件完整性、自动备份 `core.prev/`，保留 `user/`） |
-| `node install.mjs relaunch [--channel auto\|stable\|insiders] [--force]` | 携带 `--remote-debugging-port=0` 重启 Antigravity 并校验注入（含 15s 活跃会话保护） |
-| `node --disable-warning=ExperimentalWarning install.mjs doctor` | 检查 Node 版本、CDP 状态、`core/manifest.json` 哈希及页面挂载状态 |
-| `node --disable-warning=ExperimentalWarning install.mjs verify [--safe-mode]` | 单次注入并校验；`--safe-mode` 跳过 `user/` 自定义脚本以便排障 |
-| `node install.mjs sparse-paths --only <features>` | 输出指定模块组合的文件路径清单 |
-| `node install.mjs rollback` | 回滚至上一份备份的 `core/` 版本 |
-| `node install.mjs uninstall` | 停止服务、清理自启项与启动参数，恢复英文界面与原生样式 |
-| `npm run check` / `npm test` | 校验全部 `.mjs` 与拼接后的前端脚本语法，运行 61 项 `node:test` 单元测试 |
+| `node install.mjs install [--channel auto\|stable\|insiders] [--only <features>] [--minimal] [--with-launcher] [--sync-user]` | ติดตั้ง Plugin และลงทะเบียนบริการเริ่มทำงานอัตโนมัติในเบื้องหลัง |
+| `node install.mjs update [--check] [--ref <branch\|tag>]` | ตรวจสอบอัปเดตจาก GitHub และติดตั้งเวอร์ชันใหม่โดยตรง (ตรวจสอบความสมบูรณ์ของไฟล์ สำรอง `core.prev/` อัตโนมัติ และเก็บ `user/` ไว้) |
+| `node install.mjs relaunch [--channel auto\|stable\|insiders] [--force]` | รีสตาร์ต Antigravity พร้อม `--remote-debugging-port=0` และตรวจสอบการ Inject (มีระบบป้องกันเซสชันที่กำลังทำงาน 15 วินาที) |
+| `node --disable-warning=ExperimentalWarning install.mjs doctor` | ตรวจสอบเวอร์ชัน Node, สถานะ CDP, Hash ของ `core/manifest.json` และสถานะการ Mount เข้ากับหน้า UI |
+| `node --disable-warning=ExperimentalWarning install.mjs verify [--safe-mode]` | Inject หนึ่งครั้งและตรวจสอบผล โดย `--safe-mode` จะข้ามสคริปต์ปรับแต่งใน `user/` เพื่อช่วยวิเคราะห์ปัญหา |
+| `node install.mjs sparse-paths --only <features>` | แสดงรายการพาธไฟล์ของชุดโมดูลที่เลือก |
+| `node install.mjs rollback` | ย้อนกลับไปใช้ `core/` เวอร์ชันที่สำรองไว้ก่อนหน้า |
+| `node install.mjs uninstall` | หยุดบริการ ล้างรายการเริ่มทำงานอัตโนมัติและพารามิเตอร์เริ่มแอป พร้อมคืน UI ภาษาอังกฤษและ Style ดั้งเดิม |
+| `npm run check` / `npm test` | ตรวจ Syntax ของไฟล์ `.mjs` ทั้งหมดและ Frontend Script ที่ประกอบแล้ว พร้อมรัน Unit Test จำนวน 82 รายการด้วย `node:test` |
 
 </details>
 
-## 功能详解
+## รายละเอียดความสามารถ
 
-### 嵌入式设置面板与一键更新
+### แผงตั้งค่าแบบฝังในแอปและระบบอัปเดตในคลิกเดียว
 
-在 Antigravity 原生设置弹窗的侧边栏（`内置浏览器` 下方）直接嵌入 **Codex 主题** 页签，日常切换无需手改 JSON：
+ฝังแท็บ **Codex Theme** ลงใน Sidebar ของหน้าต่าง Settings ดั้งเดิมของ Antigravity (ใต้เมนู `Built-in Browser`) เพื่อให้ปรับการทำงานประจำวันได้โดยไม่ต้องแก้ไฟล์ JSON ด้วยตนเอง:
 
-- **可视化控制全部模块**：分组管理核心模块（昼夜主题 / 中文汉化 / 实时统计）、可选增强（输入预测与 `agy models` 二级级联模型选择器、SSH Remote 与 `sshHosts` 主机标签）及状态栏密度与缓存口径；关闭汉化后设置页也会同步切回英文。
-- **头部快捷栏**：标题旁内置 **手动刷新 (`↻`)** 按钮，一键强制重建并热重载当前窗口；右上角直达 GitHub 仓库与反馈入口。
-- **检查与直接更新**：底部 **版本与更新** 卡片支持一键检查 GitHub 新版本或 `main` 差异；点击 **立即更新** 后自动校验文件完整性、备份 `core.prev/` 与 `backups/`、保留 `user/` 个人配置，并在后台平滑重启热重载，无需重启 Antigravity。
+- **ควบคุมทุกโมดูลผ่าน UI**: จัดการโมดูลหลักเป็นกลุ่ม (ธีมสว่าง/มืด / ภาษา UI / สถิติเรียลไทม์) และโมดูลเสริม (คาดการณ์ข้อความพร้อมตัวเลือกโมเดลแบบลำดับชั้น 2 ระดับผ่าน `agy models`, SSH Remote และป้ายกำกับโฮสต์ `sshHosts`) รวมถึงความหนาแน่นของ Status Bar และรูปแบบการนับ Cache เมื่อปิดการแปลภาษา หน้า Settings จะสลับกลับเป็นภาษาอังกฤษตามไปด้วย
+- **แถบทางลัดด้านบน**: มีปุ่ม **รีเฟรชด้วยตนเอง (`↻`)** ข้างชื่อหน้า เพื่อสั่งสร้าง UI ใหม่และ Hot Reload หน้าต่างปัจจุบันทันที มุมขวาบนมีลิงก์ไปยัง GitHub Repository และช่องทางส่ง Feedback
+- **ตรวจสอบและอัปเดตได้โดยตรง**: การ์ด **เวอร์ชันและการอัปเดต** ด้านล่างรองรับการตรวจสอบเวอร์ชันใหม่จาก GitHub หรือเปรียบเทียบความแตกต่างกับ `main` เมื่อกด **อัปเดตทันที** ระบบจะตรวจสอบความสมบูรณ์ของไฟล์ สำรอง `core.prev/` และ `backups/` เก็บการตั้งค่าส่วนบุคคลใน `user/` ไว้ จากนั้นรีสตาร์ตบริการเบื้องหลังและ Hot Reload อย่างราบรื่น โดยไม่ต้องรีสตาร์ต Antigravity ทั้งแอป
 
-![原生嵌入式 Codex 主题设置面板与二级模型选择器](assets/settings-panel.png)
+![แผงตั้งค่า Codex Theme แบบ Native และตัวเลือกโมเดล 2 ระดับ](assets/settings-panel.png)
 
-### 输入框下一句预测（可选）
+### ระบบคาดการณ์ข้อความถัดไปในช่องพิมพ์ (ตัวเลือกเสริม)
 
-回复结束后根据当前对话上下文预测下一句指令，以幽灵灰字（Ghost Text）显示在空输入框中：
+เมื่อ AI ตอบเสร็จ ระบบจะใช้บริบทของบทสนทนาปัจจุบันคาดการณ์คำสั่งหรือข้อความถัดไป แล้วแสดงเป็นตัวอักษรสีเทาจางแบบ Ghost Text ในช่องพิมพ์ที่ยังว่าง:
 
-- **默认关闭，零额外消耗**：未开启时不启动后台 `agy` 进程、不消耗模型额度；可在 **设置 → Codex 主题** 随时开关（或安装时通过 `--only suggest` 启用），关闭后立即终止后台进程。
-- **快捷补全与模型分级**：按 `Tab`、`→` 或点击 `Tab` 角标直接填入，开始输入或按 `Esc` 隐藏；支持在设置面板中按基础模型与 `Thinking effort` 档位自由切换预测模型（默认推荐 `Gemini 3.8 Flash Low`）。
+- **ปิดไว้เป็นค่าเริ่มต้น ไม่ใช้ทรัพยากรเพิ่ม**: เมื่อไม่ได้เปิดใช้ จะไม่มีการเริ่ม Process `agy` เบื้องหลังและไม่ใช้โควตาโมเดล สามารถเปิดหรือปิดได้จาก **Settings → Codex Theme** หรือเปิดระหว่างติดตั้งด้วย `--only suggest` เมื่อปิดใช้งาน ระบบจะหยุด Process เบื้องหลังทันที
+- **เติมข้อความด้วยคีย์ลัดและเลือกโมเดลได้**: กด `Tab`, `→` หรือคลิกป้าย `Tab` เพื่อเติมข้อความลงในช่องพิมพ์ เริ่มพิมพ์หรือกด `Esc` เพื่อซ่อนข้อความแนะนำ สามารถเลือกโมเดลคาดการณ์ตาม Base Model และระดับ `Thinking effort` ได้จากแผง Settings (ค่าแนะนำเริ่มต้นคือ `Gemini 3.8 Flash Low`)
 
-![输入框下一句预测 Ghost Text 与 Tab 补全](assets/prompt-suggestions.png)
+![ระบบคาดการณ์ข้อความถัดไปด้วย Ghost Text และการเติมข้อความผ่าน Tab](assets/prompt-suggestions.png)
 
-### 实时会话状态与用量统计
+### สถานะเซสชันและสถิติการใช้งานแบบเรียลไทม์
 
-输入框底部工具栏中部嵌入紧凑的状态圆点与实时指标摘要（`● 248 tok/s · Ctx 42% · Cache 90.9%`），悬停即可预览一级面板，点击逐级展开或固定：
+ฝังจุดแสดงสถานะขนาดกะทัดรัดและสรุปตัวชี้วัดแบบเรียลไทม์ไว้ตรงกลางแถบเครื่องมือด้านล่างของช่องพิมพ์ (เช่น `● 248 tok/s · Ctx 42% · Cache 90.9%`) เลื่อนเมาส์เพื่อดูแผงสรุประดับแรก และคลิกเพื่อขยายรายละเอียดหรือปักหมุดแผงไว้:
 
-| 会话状态 | 圆点样式 | 触发条件 |
+| สถานะเซสชัน | รูปแบบไฟแสดงสถานะ | เงื่อนไขการเปลี่ยนสถานะ |
 | :--- | :--- | :--- |
-| 就绪 | **蓝色常亮** | 连接正常且空闲；主动取消生成后立即恢复 |
-| 执行中 | **蓝色闪烁** | 模型流式输出、`/compact` 压缩或工具调用进行中 |
-| 等待或重试 | **黄色脉冲** | 首字/单步等待 `>= 60s`（如跨模型 `/compact` 重算 KV 缓存）、模型自动重试或建连耗时 `3s ~ 11s` |
-| 连接或执行异常 | **红色脉冲** | 网络离线、建连超时 `>= 12s`、API/步骤报错（不含主动取消）或后台心跳超时 `>= 90s` |
+| พร้อมใช้งาน | **สีน้ำเงินติดค้าง** | เชื่อมต่อสำเร็จและไม่มีงานทำงานอยู่ เมื่อผู้ใช้ยกเลิกการสร้างคำตอบ สถานะจะกลับมาพร้อมใช้งานทันที |
+| กำลังทำงาน | **สีน้ำเงินกะพริบ** | โมเดลกำลังส่งผลลัพธ์แบบ Streaming, กำลังย่อบริบทด้วย `/compact` หรือกำลังเรียกใช้เครื่องมือ |
+| รอหรือกำลังลองใหม่ | **สีเหลืองเต้นเป็นจังหวะ** | รอ First Token หรือรอขั้นตอนใดขั้นตอนหนึ่งตั้งแต่ `>= 60s` (เช่น คำนวณ KV Cache ใหม่เมื่อใช้ `/compact` ข้ามโมเดล), โมเดลกำลัง Retry อัตโนมัติ หรือใช้เวลาสร้างการเชื่อมต่อ `3s ~ 11s` |
+| การเชื่อมต่อหรือการทำงานผิดปกติ | **สีแดงเต้นเป็นจังหวะ** | เครือข่ายออฟไลน์, เชื่อมต่อเกิน `>= 12s`, API/ขั้นตอนทำงานผิดพลาด (ไม่นับการยกเลิกโดยผู้ใช้) หรือ Heartbeat จากบริการเบื้องหลังขาดหายเกิน `>= 90s` |
 
-![会话状态：就绪、执行中、等待或重试、连接或执行异常](assets/led-status-states.png)
+![สถานะเซสชัน 4 รูปแบบ: พร้อมใช้งาน กำลังทำงาน รอหรือ Retry และผิดปกติ](assets/led-status-states.png)
 
-- **一/二级用量面板与上下文预警**：一级面板展示生成速度（含端到端均值）、上下文占比与剩余容量、累计缓存命中率及分段进度条；再次点击或点「展开明细」进入二级面板，补充首字延迟（TTFT）、思考/正文输出拆分、本轮多步汇总与会话累计用量。上下文达到 `>= 75%` 黄色预警、`>= 90%` 红色提醒，`/compact` 期间实时显示压缩提示与完成后的摘要体积。
+- **แผงการใช้งานระดับ 1/2 และการแจ้งเตือน Context**: แผงระดับแรกแสดงความเร็วในการสร้างผลลัพธ์ (รวมค่าเฉลี่ยแบบ End-to-End), สัดส่วน Context และความจุที่เหลือ, อัตรา Cache Hit สะสม และแถบความคืบหน้าแบบแบ่งช่วง คลิกอีกครั้งหรือเลือก “แสดงรายละเอียด” เพื่อเปิดแผงระดับที่สอง ซึ่งแสดง First Token Latency (TTFT), การแยกปริมาณ Thinking/ข้อความตอบกลับ, สรุปการใช้งานหลาย Step ในรอบปัจจุบัน และยอดรวมสะสมของเซสชัน เมื่อ Context ถึง `>= 75%` จะแจ้งเตือนสีเหลือง และเมื่อถึง `>= 90%` จะแจ้งเตือนสีแดง ระหว่าง `/compact` จะแสดงสถานะการย่อบริบทแบบเรียลไทม์ พร้อมสรุปขนาดบริบทหลังทำงานเสร็จ
 
-![一级概览、二级详情、上下文预警及每轮对话尾部统计](assets/telemetry-bento-panels.png)
+![ภาพรวมระดับ 1 รายละเอียดระดับ 2 การแจ้งเตือน Context และสถิติท้ายแต่ละรอบ](assets/telemetry-bento-panels.png)
 
-- **状态栏自适应布局**：支持 `compact`（默认紧凑）与 `detailed`（详细）两种形态——`compact` 在宽屏下居中嵌在工具栏中段，窄侧栏或旁路提问空间不足时自动切至底部居中虚线行；`detailed` 固定展开为底部居中独立行，完整呈现 `TTFT`、精确上下文与 `Out`，不挤压原生按钮，且与悬浮详情面板共用同一条中轴线（仅文字区域响应悬停，避免误触左右空白）。
+- **Status Bar ปรับ Layout อัตโนมัติ**: รองรับ 2 รูปแบบ ได้แก่ `compact` (กะทัดรัด เป็นค่าเริ่มต้น) และ `detailed` (แสดงรายละเอียด) — ในโหมด `compact` จะแสดงกึ่งกลางแถบเครื่องมือเมื่อพื้นที่กว้างเพียงพอ หาก Sidebar แคบหรือพื้นที่ของ Side Question ไม่เพียงพอ ระบบจะย้ายไปแสดงเป็นแถวเส้นประตรงกลางด้านล่างโดยอัตโนมัติ ส่วนโหมด `detailed` จะตรึงข้อมูลเป็นแถวแยกตรงกลางด้านล่าง แสดง `TTFT`, ค่า Context ที่แม่นยำ และ `Out` ได้ครบ โดยไม่เบียดปุ่มดั้งเดิม และจัดแนวแกนกลางเดียวกับแผงรายละเอียดแบบ Hover (พื้นที่ตอบสนองต่อเมาส์จำกัดอยู่เฉพาะส่วนข้อความ เพื่อลดการคลิกพลาดบริเวณว่างด้านข้าง)
 
-![状态栏三种自适应布局](assets/telemetry-layouts.png)
+![ตัวอย่าง Status Bar ทั้ง 3 รูปแบบการจัดวางแบบปรับตามพื้นที่](assets/telemetry-layouts.png)
 
-- **每轮对话尾部统计**：每轮回复操作栏左侧附带当轮摘要，悬停即可弹出详情卡，展示步数、上下文占比、思考与正文/工具拆分、新增与读缓存输入及流式/总耗时。
+- **สถิติท้ายแต่ละรอบการสนทนา**: เพิ่มสรุปการใช้งานของรอบนั้นไว้ด้านซ้ายของแถบเครื่องมือข้อความตอบกลับ เลื่อนเมาส์เพื่อเปิดการ์ดรายละเอียด ซึ่งแสดงจำนวน Step, สัดส่วน Context, การแยก Thinking/ข้อความ/Tool, ปริมาณ Input Cache ใหม่และ Cache ที่อ่านซ้ำ รวมถึงเวลาที่ใช้แบบ Streaming และเวลารวมทั้งหมด
 
-![每轮对话尾部统计与悬浮详情卡](assets/turn-hover-card.png)
+![สถิติท้ายแต่ละรอบและการ์ดรายละเอียดเมื่อเลื่อนเมาส์](assets/turn-hover-card.png)
 
-#### SSH Remote 远端只读统计
+#### สถิติ SSH Remote แบบอ่านอย่างเดียว
 
-连接远端开发机时，可在 **设置 → Codex 主题** 中开启 **SSH Remote 远端只读统计** 并添加主机别名（默认关闭，不扫描 `~/.ssh/config`）。后台通过单条常驻 `ssh` 会话执行 `~/.gemini/antigravity/codex-theme-remote/metrics_reader.py --serve`（纯明文只读脚本，无 `base64`/`exec`/`-c`，企业 HIDS 友好）以 `sqlite3` `mode=ro` 读取最新 WAL，**在远端剥离全部正文、Prompt 与 Checkpoint 文本**，仅回传脱敏数值元数据并在本地纯内存解析，不调用 `scp`，不在本地拷贝或残留任何 `.db` 文件。
+เมื่อต้องเชื่อมต่อเครื่องพัฒนาระยะไกล สามารถเปิด **SSH Remote – สถิติระยะไกลแบบอ่านอย่างเดียว** ใน **Settings → Codex Theme** และเพิ่มชื่อโฮสต์ที่อนุญาตได้ (ปิดไว้เป็นค่าเริ่มต้น และจะไม่สแกน `~/.ssh/config`) บริการเบื้องหลังใช้ SSH Session แบบคงอยู่เพียงหนึ่ง Session เพื่อเรียก `~/.gemini/antigravity/codex-theme-remote/metrics_reader.py --serve` (สคริปต์อ่านข้อมูลอย่างเดียวแบบ Plain Text ไม่มี `base64` / `exec` / `-c` เหมาะกับสภาพแวดล้อมองค์กรที่มี HIDS) จากนั้นใช้ `sqlite3` โหมด `mode=ro` อ่านข้อมูล WAL ล่าสุด โดย **ตัดเนื้อหาข้อความทั้งหมด, Prompt และข้อความ Checkpoint ออกจากข้อมูลบนเครื่องปลายทาง** ส่งกลับมาเฉพาะ Metadata เชิงตัวเลขที่ผ่านการลดการระบุตัวตน แล้วประมวลผลในหน่วยความจำของเครื่องต้นทางเท่านั้น ไม่มีการเรียก `scp` และไม่มีการคัดลอกหรือทิ้งไฟล์ `.db` ไว้ในเครื่องต้นทาง
 
 <details>
-<summary>查看 SSH Remote 手动配置示例（user/config.json）</summary>
+<summary>ดูตัวอย่างการตั้งค่า SSH Remote ด้วยตนเอง (user/config.json)</summary>
 
-前置要求远端具备 `python3` 且本地可无密码 SSH 登录：
+ข้อกำหนดเบื้องต้น: เครื่องปลายทางต้องมี `python3` และเครื่องต้นทางต้องเชื่อมต่อ SSH ได้โดยไม่ต้องกรอกรหัสผ่าน:
 
 ```json
 {
@@ -206,109 +206,109 @@ node install.mjs install --only i18n --minimal
 
 </details>
 
-### 多语言界面本地化
+### ระบบแปลภาษา UI
 
-在 **设置 → Codex 主题 → Interface language** 中选择 **English / 简体中文 / ไทย**。简体中文继续使用原有完整词典；泰语使用独立的 `core/locales/th-TH.json` 词典，已覆盖原始界面词典中的全部 1,937 个词条，并为动态配额、时间、任务状态及无障碍标签提供泰语格式化。泰语翻译以自然表达为主，并保留 Agent、Workspace、Context、Token、Prompt、MCP、API、Terminal、IDE、CLI、Plugin 与 Skills 等常见开发术语。可通过 `user/i18n.th-TH.override.json` 自定义泰语词条。
+เลือกภาษาได้ที่ **Settings → Codex Theme → Interface language** โดยรองรับ **English / 简体中文 / ไทย** ภาษาจีนตัวย่อยังคงใช้ Dictionary เดิม ส่วนภาษาไทยใช้ Dictionary แยกที่ `core/locales/th-TH.json` ซึ่งครอบคลุม Key ทั้ง 1,937 รายการจาก Dictionary ต้นฉบับ พร้อม Formatter ภาษาไทยสำหรับข้อความ Quota, เวลา, สถานะงาน และ Accessibility Labels คำแปลเน้นสำนวนที่เป็นธรรมชาติและเหมาะกับนักพัฒนา โดยคงคำศัพท์ที่ใช้กันทั่วไป เช่น Agent, Workspace, Context, Token, Prompt, MCP, API, Terminal, IDE, CLI, Plugin และ Skills ไว้ตามความเหมาะสม สามารถปรับคำแปลภาษาไทยเพิ่มเติมได้ผ่าน `user/i18n.th-TH.override.json`
 
-简体中文内置 `1,900+` 条词条，覆盖 Antigravity `2.30.x` ~ `2.35.1+` 的设置面板（含 Orchestrator 设置、输入框发送快捷键与沙箱权限）、菜单、权限选项、侧边栏、旁路提问、插件管理、工具审批状态，以及**模型额度耗尽与 AI 点数不足的动态时间/点数拼接提示**（自动保留英文模型名与思考档位）。采用 `WeakMap` 原地更新文本节点，不破坏 React 绑定；可通过 [user/i18n.override.json](user/i18n.override.json) 覆盖词条，或在设置面板一键关闭恢复英文。
+Dictionary ภาษาจีนตัวย่อมีคำแปลในตัวมากกว่า `1,900+` รายการ ครอบคลุม Settings Panel ของ Antigravity รุ่น `2.30.x` ถึง `2.35.1+` (รวมการตั้งค่า Orchestrator, คีย์ลัดส่งข้อความในช่องพิมพ์ และสิทธิ์ Sandbox), เมนู, ตัวเลือกสิทธิ์, Sidebar, Side Question, การจัดการ Plugin, สถานะการอนุมัติ Tool รวมถึง **ข้อความแจ้งเตือนแบบไดนามิกเมื่อ Quota ของโมเดลหมดหรือ AI Credits ไม่เพียงพอ** ซึ่งประกอบข้อความเวลา/จำนวนเครดิตโดยอัตโนมัติ พร้อมคงชื่อโมเดลและระดับ Thinking เป็นภาษาเดิม ระบบใช้ `WeakMap` เพื่ออัปเดต Text Node โดยตรงโดยไม่ทำลาย React Binding สามารถกำหนดคำแปลเองผ่าน [user/i18n.override.json](user/i18n.override.json) หรือปิดการแปลภาษาได้จาก Settings Panel เพื่อกลับไปใช้ภาษาอังกฤษ
 
-### Codex 昼夜主题与实用修复
+### ธีม Codex โหมดสว่าง/มืดและการแก้ไขปัญหาที่พบบ่อย
 
-- **浅色 (`codex-pure-white`)**：`#FFFFFF` 主画布、`#F9F9F9` 侧边栏、`#EFEFEF` 选中项、`#2B7FFF` 主按钮，搭配 `#F7F7F8` 外托盘与 `#FFFFFF` 内卡片的同心圆角输入框。
-- **深色 (`codex-dark`)**：中性炭灰深色方案，包含 `#181818` 主画布、`#232323` 侧边栏、`#353535` 选中项、`#262626` 外托盘、`#363636` 输入卡片与 `#2C67C5` 主按钮。
-- **实用修复**：修复设置弹窗路由死锁，补充 macOS (`Cmd + -/=/0`) 与 Windows/Linux (`Ctrl + -/=/0`) 缩放快捷键，并支持 Antigravity `2.33.0+` 单图标冷启动自动接力。
+- **โหมดสว่าง (`codex-pure-white`)**: Canvas หลักสี `#FFFFFF`, Sidebar สี `#F9F9F9`, รายการที่เลือกสี `#EFEFEF`, ปุ่มหลักสี `#2B7FFF` พร้อมช่องพิมพ์มุมโค้งซ้อนชั้น โดยใช้ Outer Tray สี `#F7F7F8` และ Inner Card สี `#FFFFFF`
+- **โหมดมืด (`codex-dark`)**: ชุดสีเทาถ่านแบบเป็นกลาง ประกอบด้วย Canvas หลัก `#181818`, Sidebar `#232323`, รายการที่เลือก `#353535`, Outer Tray `#262626`, Input Card `#363636` และปุ่มหลัก `#2C67C5`
+- **การแก้ไขปัญหาและเพิ่มความสะดวก**: แก้ปัญหา Route Deadlock ในหน้าต่าง Settings เพิ่มคีย์ลัดปรับ Zoom บน macOS (`Cmd + -/=/0`) และ Windows/Linux (`Ctrl + -/=/0`) พร้อมรองรับการส่งต่อพารามิเตอร์อัตโนมัติในขั้นตอน Cold Start แบบไอคอนเดียวของ Antigravity `2.33.0+`
 
-## 自定义与卸载
+## ปรับแต่งและถอนการติดตั้ง
 
-### 日常配置与高级定制（`user/`）
+### การตั้งค่าทั่วไปและการปรับแต่งขั้นสูง (`user/`)
 
-日常模块开关、模型切换、主机白名单和状态栏偏好推荐直接在 **设置 → Codex 主题** 中修改，保存后实时写入 `~/.gemini/antigravity/codex-theme/user/config.json` 并热重载生效，升级插件时不会覆盖 `user/` 目录。
+แนะนำให้จัดการการเปิด/ปิดโมดูล การเปลี่ยนโมเดล รายชื่อโฮสต์ที่อนุญาต และรูปแบบ Status Bar ผ่าน **Settings → Codex Theme** โดยตรง เมื่อบันทึก ระบบจะเขียนค่าลงใน `~/.gemini/antigravity/codex-theme/user/config.json` และ Hot Reload ให้มีผลทันที การอัปเดต Plugin จะไม่เขียนทับไดเรกทอรี `user/`
 
 <details>
-<summary>查看 user/ 目录与 config.json 高级字段说明</summary>
+<summary>ดูโครงสร้างไดเรกทอรี user/ และรายละเอียดฟิลด์ขั้นสูงใน config.json</summary>
 
 - [user/config.json](user/config.json)
-  - `locale`：`"en"`、`"zh-CN"` 或 `"th-TH"`（界面语言；默认沿用原有简体中文行为）
-  - `preset`：`"codex-pure-white"` 或 `"codex-dark"`
-  - `themeVars`：按需覆盖 `--background`、`--sidebar`、`--primary`、`--ag-composer-*`、`--ag-dark-*` 等 CSS 变量
-  - `telemetryLayout`：`"compact"`（默认）或 `"detailed"`
-  - `telemetryCacheMode`：`"session"`（会话累计命中率）或 `"step"`（单步命中率）
-  - `modules`：独立控制 `theme`、`i18n`、`metrics`、`sshRemote`、`promptSuggestions`、`deadlockHealer`、`zoomShortcuts`、`cdpAutoRelaunch`、`customCss`、`customJs`
-  - `promptSuggestionModel`：输入框预测模型 ID（默认 `"gemini-3.8-flash-low"`）
-  - `sshHosts`：显式允许探测的远端 SSH 主机列表（如 `["node032"]`）
-- [user/i18n.override.json](user/i18n.override.json)：追加或覆盖简体中文词条。
-- `user/i18n.th-TH.override.json`：追加或覆盖泰语词条。
-- [user/custom.css](user/custom.css) 与 [user/custom.js](user/custom.js)：注入自定义样式与脚本钩子，热重载时自动清理旧副作用。
+  - `locale`: `"en"`, `"zh-CN"` หรือ `"th-TH"` (ภาษาของ UI; หากไม่มีการกำหนด จะคงพฤติกรรมภาษา Simplified Chinese แบบเดิม)
+  - `preset`: `"codex-pure-white"` หรือ `"codex-dark"`
+  - `themeVars`: กำหนดค่า CSS Variable เองตามต้องการ เช่น `--background`, `--sidebar`, `--primary`, `--ag-composer-*`, `--ag-dark-*`
+  - `telemetryLayout`: `"compact"` (ค่าเริ่มต้น) หรือ `"detailed"`
+  - `telemetryCacheMode`: `"session"` (อัตรา Cache Hit สะสมของเซสชัน) หรือ `"step"` (อัตรา Cache Hit ต่อ Step)
+  - `modules`: เปิด/ปิดโมดูลแยกกัน ได้แก่ `theme`, `i18n`, `metrics`, `sshRemote`, `promptSuggestions`, `deadlockHealer`, `zoomShortcuts`, `cdpAutoRelaunch`, `customCss` และ `customJs`
+  - `promptSuggestionModel`: ID ของโมเดลสำหรับคาดการณ์ข้อความถัดไป (ค่าเริ่มต้น `"gemini-3.8-flash-low"`)
+  - `sshHosts`: รายชื่อโฮสต์ SSH ระยะไกลที่อนุญาตให้ตรวจสอบอย่างชัดเจน เช่น `["node032"]`
+- [user/i18n.override.json](user/i18n.override.json): เพิ่มหรือเขียนทับคำแปลภาษาจีนตัวย่อ
+- `user/i18n.th-TH.override.json`: เพิ่มหรือเขียนทับคำแปลภาษาไทย
+- [user/custom.css](user/custom.css) และ [user/custom.js](user/custom.js): Inject CSS และ JavaScript Hook สำหรับปรับแต่งเอง ระบบจะล้างผลข้างเคียงจากสคริปต์เดิมโดยอัตโนมัติเมื่อ Hot Reload
 
 </details>
 
-### 源码定制（`core/`）
+### ปรับแต่ง Source Code (`core/`)
 
-核心代码拆分为 34 个独立模块，配套 61 项 `node:test` 单元测试：
+Source Code หลักแบ่งออกเป็น 34 โมดูลอิสระ พร้อม Unit Test จำนวน 82 รายการด้วย `node:test`:
 
-| 定制方向 | 对应文件 |
+| ส่วนที่ต้องการปรับแต่ง | ไฟล์ที่เกี่ยวข้อง |
 | :--- | :--- |
-| 昼夜主题配色与布局 | [core/styles/00-base.css](core/styles/00-base.css)、[10-light-codex.css](core/styles/10-light-codex.css)、[20-dark-codex.css](core/styles/20-dark-codex.css) |
-| 原生设置面板与自更新 | [core/runtime/75-settings-ui.js](core/runtime/75-settings-ui.js)、[core/styles/45-settings-ui.css](core/styles/45-settings-ui.css)、[core/daemon/updater.mjs](core/daemon/updater.mjs) |
-| 状态机与用量统计面板 | [core/runtime/40-status-machine.js](core/runtime/40-status-machine.js)、[core/daemon/telemetry-renderer.mjs](core/daemon/telemetry-renderer.mjs)、[core/styles/30-telemetry.css](core/styles/30-telemetry.css) |
-| 输入预测与模型解析 | [core/daemon/prompt-suggest.mjs](core/daemon/prompt-suggest.mjs)、[core/runtime/70-prompt-suggestions.js](core/runtime/70-prompt-suggestions.js) |
-| 词典与按需分组 | [core/i18n.json](core/i18n.json)、[core/runtime/60-i18n-engine.js](core/runtime/60-i18n-engine.js)、[core/installer/features.mjs](core/installer/features.mjs) |
+| ชุดสีและ Layout ของธีมสว่าง/มืด | [core/styles/00-base.css](core/styles/00-base.css), [10-light-codex.css](core/styles/10-light-codex.css), [20-dark-codex.css](core/styles/20-dark-codex.css) |
+| แผงตั้งค่า Native และระบบอัปเดตตัวเอง | [core/runtime/75-settings-ui.js](core/runtime/75-settings-ui.js), [core/styles/45-settings-ui.css](core/styles/45-settings-ui.css), [core/daemon/updater.mjs](core/daemon/updater.mjs) |
+| State Machine และแผงสถิติการใช้งาน | [core/runtime/40-status-machine.js](core/runtime/40-status-machine.js), [core/daemon/telemetry-renderer.mjs](core/daemon/telemetry-renderer.mjs), [core/styles/30-telemetry.css](core/styles/30-telemetry.css) |
+| ระบบคาดการณ์ข้อความและการวิเคราะห์โมเดล | [core/daemon/prompt-suggest.mjs](core/daemon/prompt-suggest.mjs), [core/runtime/70-prompt-suggestions.js](core/runtime/70-prompt-suggestions.js) |
+| Dictionary และการจัดกลุ่มโมดูลสำหรับติดตั้งเฉพาะส่วน | [core/i18n.json](core/i18n.json), [core/runtime/60-i18n-engine.js](core/runtime/60-i18n-engine.js), [core/installer/features.mjs](core/installer/features.mjs) |
 
-修改 `core/` 后运行以下命令即可重建哈希清单、跑完校验与测试并部署至本机：
+หลังแก้ไขไฟล์ใน `core/` ให้รันคำสั่งต่อไปนี้เพื่อสร้าง Hash Manifest ใหม่ ตรวจสอบโค้ด รันทดสอบทั้งหมด และติดตั้งลงในเครื่อง:
 
 ```bash
 node install.mjs build-manifest && npm run check && npm test && node install.mjs install
 ```
 
 <details>
-<summary>查看仓库目录结构</summary>
+<summary>ดูโครงสร้างไดเรกทอรีของ Repository</summary>
 
 ```text
 antigravity-codex-theme/
-├── assets/                     # README 展示图
+├── assets/                     # ภาพประกอบที่ใช้ใน README
 ├── core/
-│   ├── daemon/                 # 后台同步服务（热加载 / Protobuf / 重试日志 / 渲染 / SQLite / SSH Remote / 下一句预测 / 自更新 / CDP / 2.33.0 接力）
-│   ├── runtime/                # 按序注入的前端脚本（生命周期 / 修复 / 明暗同步 / 状态机 / 统计界面 / 汉化 / 输入预测 / 嵌入式设置面板）
-│   ├── styles/                 # 样式模块（基础 / 浅色 / 深色 / 状态与统计 / 输入预测 / 设置面板）
-│   ├── installer/              # 模块分组 / Manifest 校验打包 / 环境探测 / 跨平台自启与 CDP 管理
-│   ├── daemon.mjs              # 后台服务入口
-│   ├── shared.mjs              # 公共工具函数
-│   ├── i18n.json               # 1,900+ 简体中文界面词典
-│   ├── locales/                 # 多语言词典（当前含 th-TH）
-│   └── manifest.json           # core/ 文件完整性哈希清单
-├── tests/                      # 61 项 node:test 单元测试
-├── user/                       # 个人配置与热重载目录
-├── install.mjs                 # 安装、更新、重启与运维 CLI
-├── SKILL.md                    # AI Agent 操作指南
-└── LICENSE                     # MIT License
+│   ├── daemon/                 # บริการซิงก์เบื้องหลัง (Hot Reload / Protobuf / Retry Log / Renderer / SQLite / SSH Remote / Next Prompt / Updater / CDP / 2.33.0 Relay)
+│   ├── runtime/                # Frontend Script สำหรับ Inject ตามลำดับ (Lifecycle / Fixes / Theme Sync / State Machine / Metrics UI / Localization / Prompt Suggestion / Embedded Settings)
+│   ├── styles/                 # โมดูล Style (พื้นฐาน / สว่าง / มืด / สถานะและสถิติ / คาดการณ์ข้อความ / Settings Panel)
+│   ├── installer/              # จัดกลุ่มโมดูล / ตรวจสอบและจัดแพ็กเกจ Manifest / ตรวจสอบสภาพแวดล้อม / จัดการ Auto-start และ CDP ข้ามแพลตฟอร์ม
+│   ├── daemon.mjs              # จุดเริ่มต้นของบริการเบื้องหลัง
+│   ├── shared.mjs              # ฟังก์ชันเครื่องมือส่วนกลาง
+│   ├── i18n.json               # Dictionary UI ภาษาจีนตัวย่อ 1,900+ รายการ
+│   ├── locales/                 # Dictionary หลายภาษา (ปัจจุบันมี th-TH)
+│   └── manifest.json           # Hash Manifest สำหรับตรวจสอบความสมบูรณ์ของไฟล์ core/
+├── tests/                      # Unit Test จำนวน 82 รายการด้วย node:test
+├── user/                       # ไดเรกทอรีการตั้งค่าส่วนบุคคลและ Hot Reload
+├── install.mjs                 # CLI สำหรับติดตั้ง อัปเดต รีสตาร์ต และดูแลระบบ
+├── SKILL.md                    # คู่มือการทำงานสำหรับ AI Agent
+└── LICENSE                     # สัญญาอนุญาต MIT
 ```
 
 </details>
 
-### 卸载与保留
+### ถอนการติดตั้งและข้อมูลที่ยังคงเก็บไว้
 
-执行 `node install.mjs uninstall` 后：
+รัน `node install.mjs uninstall` เพื่อถอนการติดตั้ง จากนั้นระบบจะดำเนินการดังนี้:
 
-- **移除与还原**：停止后台进程，清理系统自启项（macOS `LaunchAgent`、Linux `systemd --user`、Windows 计划任务/启动脚本）及托管的 CDP 启动参数，将当前窗口恢复为默认英文界面与原生样式。
-- **默认保留**：保留 `~/.gemini/antigravity/codex-theme/user/` 个人配置、`backups/` 与 `core.prev/` 备份，以及 `~/.antigravity/argv.json` 中的 `"remote-debugging-port"` 字段；如需彻底清除，手动删除即可。
+- **ลบส่วนที่ติดตั้งและคืนค่าระบบ**: หยุด Process เบื้องหลัง ลบรายการเริ่มทำงานอัตโนมัติของระบบ (macOS `LaunchAgent`, Linux `systemd --user`, Windows Scheduled Tasks/Startup Scripts) และพารามิเตอร์ CDP ที่ Plugin เป็นผู้จัดการ พร้อมคืนหน้าต่างปัจจุบันให้ใช้ UI ภาษาอังกฤษและ Style ดั้งเดิม
+- **ข้อมูลที่เก็บไว้เป็นค่าเริ่มต้น**: ยังคงเก็บการตั้งค่าส่วนบุคคลใน `~/.gemini/antigravity/codex-theme/user/`, โฟลเดอร์สำรอง `backups/` และ `core.prev/` รวมถึงฟิลด์ `"remote-debugging-port"` ใน `~/.antigravity/argv.json` หากต้องการลบข้อมูลทั้งหมด ให้ลบรายการเหล่านี้ด้วยตนเอง
 
-## 致谢与协议
+## เครดิตและสัญญาอนุญาต
 
-感谢以下社区贡献者通过 Pull Request 完善本项目：
+ขอขอบคุณผู้มีส่วนร่วมจากชุมชนที่ช่วยพัฒนาโครงการผ่าน Pull Request:
 
-- [@isdou](https://github.com/isdou)（[PR #1](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/1)）：贡献输入框下一句预测（Ghost Text + `Tab` / `→` 补全）
-- [@xiaoxiami-zyx](https://github.com/xiaoxiami-zyx)（[PR #3](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/3)）：贡献 SSH Remote 远端只读统计元数据提取与纯内存解析
-- [@chunbin1](https://github.com/chunbin1)（[PR #6](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/6)）：贡献冷启动目标退避重试机制，修复主窗口附着失败导致的心跳超时
+- [@isdou](https://github.com/isdou) ([PR #1](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/1)): เพิ่มระบบคาดการณ์ข้อความถัดไปในช่องพิมพ์ (Ghost Text + เติมข้อความด้วย `Tab` / `→`)
+- [@xiaoxiami-zyx](https://github.com/xiaoxiami-zyx) ([PR #3](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/3)): เพิ่มการดึง Metadata สถิติ SSH Remote แบบอ่านอย่างเดียว และประมวลผลในหน่วยความจำ
+- [@chunbin1](https://github.com/chunbin1) ([PR #6](https://github.com/nkjDSLcvanv/antigravity-codex-theme/pull/6)): เพิ่มกลไก Retry แบบ Backoff สำหรับ Cold Start เพื่อแก้ปัญหาการ Attach เข้าหน้าต่างหลักไม่สำเร็จจนทำให้ Heartbeat Timeout
 
-早期调研 Antigravity 的 CDP 运行时注入、`WeakMap` 原地文本替换、SQLite 增量读取及 `2.33.0` `--remote-debugging-port=0` 启动接力方案时，参考了 [Anarcadia/chuanban-antigravity-theme-patch](https://github.com/Anarcadia/chuanban-antigravity-theme-patch)（MIT），在此一并致谢。
+ในช่วงศึกษาการ Inject ผ่าน CDP Runtime ของ Antigravity, การแทนที่ข้อความใน DOM โดยใช้ `WeakMap`, การอ่าน SQLite แบบ Incremental และกลไกส่งต่อการเริ่มแอปด้วย `--remote-debugging-port=0` สำหรับรุ่น `2.33.0` โครงการนี้ได้รับแรงบันดาลใจและอ้างอิงแนวทางจาก [Anarcadia/chuanban-antigravity-theme-patch](https://github.com/Anarcadia/chuanban-antigravity-theme-patch) (MIT) จึงขอขอบคุณไว้ ณ ที่นี้ด้วย
 
-本项目在此基础上重写了整体架构并扩展了以下能力：34 个独立模块与 61 项单元测试及 CI、无外部字体依赖的 Codex 昼夜主题、嵌入式 **Codex 主题** 设置面板与面板内检查更新、四态会话状态机与一/二级用量面板及每轮悬浮详情卡、可选 SSH Remote 只读统计与输入预测，以及 `--only` 按需安装与 `user/` 热重载分层。
+โครงการนี้ได้เขียนสถาปัตยกรรมหลักขึ้นใหม่และต่อยอดความสามารถเพิ่มเติม ได้แก่ 34 โมดูลอิสระ พร้อม Unit Test 82 รายการและ CI, ธีม Codex สว่าง/มืดที่ไม่พึ่งพาฟอนต์ภายนอก, แผงตั้งค่า **Codex Theme** แบบฝังในแอปพร้อมระบบตรวจสอบอัปเดต, State Machine สถานะเซสชัน 4 รูปแบบ พร้อมแผงสถิติระดับ 1/2 และการ์ดรายละเอียดแบบ Hover ในแต่ละรอบ, SSH Remote แบบอ่านอย่างเดียวและระบบคาดการณ์ข้อความที่เลือกเปิดใช้ได้ รวมถึงการติดตั้งเฉพาะโมดูลด้วย `--only` และการแยกการตั้งค่าส่วนบุคคลใน `user/` เพื่อรองรับ Hot Reload
 
-基于 [MIT License](LICENSE) 开源，欢迎 Fork 与定制。
+เผยแพร่ภายใต้ [MIT License](LICENSE) สามารถ Fork และนำไปปรับแต่งต่อได้ตามต้องการ
 
 ## English Overview
 
-`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 61 `node:test` unit tests (requires Node.js `>= 22.13.0`, verified on macOS, Windows, and Linux desktops).
+`antigravity-codex-theme` brings Codex light and dark themes, Chinese and Thai UI localization, an embedded native Settings panel, and live session telemetry to Google Antigravity (`2.30.x` – `2.35.1+`) without modifying the application bundle. Built as 34 independent modules under `core/` with 82 `node:test` test cases (requires Node.js `>= 22.13.0`).
 
 - **Codex Light & Dark Themes**: Pure white (`codex-pure-white`) and charcoal dark (`codex-dark`) palettes with zero external font dependencies and automatic light/dark switching.
 - **Embedded Settings Panel & Self-Updater**: Mounts directly under **Settings → Codex Theme** to toggle modules, select prompt-suggestion models & thinking effort tiers via a 2-level `agy models` cascading menu, edit `sshHosts`, trigger manual hot-reloads, and check/apply in-panel updates (`node install.mjs update`) with integrity verification and automatic `core.prev/` rollback backups while preserving `user/`.
