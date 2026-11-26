@@ -51,7 +51,8 @@ export const FEATURE_GROUPS = Object.freeze({
       '/core/i18n.json',
       '/core/locales',
       '/core/runtime/60-i18n-engine.js',
-      '/user/i18n.override.json'
+      '/user/i18n.override.json',
+      '/user/i18n.th-TH.override.json'
     ],
     coreRelPaths: [
       'i18n.json',
