@@ -484,11 +484,15 @@
           const v = String(value || '').trim();
           if (v === '<1m' || v === '< 1m') return 'ไม่ถึง 1 นาที';
           return v
-            .replace(/(\\d+)\\s*d\\b/gi, '$1 วัน')
-            .replace(/(\\d+)\\s*h\\b/gi, '$1 ชั่วโมง')
-            .replace(/(\\d+)\\s*m\\b/gi, '$1 นาที')
-            .replace(/(\\d+)\\s*s\\b/gi, '$1 วินาที')
-            .replace(/\\s+/g, ' ')
+            .replace(/(\d+)\s*days?\b/gi, '$1 วัน')
+            .replace(/(\d+)\s*hours?\b/gi, '$1 ชั่วโมง')
+            .replace(/(\d+)\s*minutes?\b/gi, '$1 นาที')
+            .replace(/(\d+)\s*seconds?\b/gi, '$1 วินาที')
+            .replace(/(\d+)\s*d\b/gi, '$1 วัน')
+            .replace(/(\d+)\s*h\b/gi, '$1 ชั่วโมง')
+            .replace(/(\d+)\s*m\b/gi, '$1 นาที')
+            .replace(/(\d+)\s*s\b/gi, '$1 วินาที')
+            .replace(/\s+/g, ' ')
             .trim();
         };
         const quotaModel = (value) => !value || /^this model$/i.test(value.trim()) ? 'โมเดลนี้' : value.trim();
