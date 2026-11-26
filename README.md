@@ -251,7 +251,7 @@ Source Code หลักแบ่งออกเป็น 34 โมดูลอ�
 | ชุดสีและ Layout ของธีมสว่าง/มืด | [core/styles/00-base.css](core/styles/00-base.css), [10-light-codex.css](core/styles/10-light-codex.css), [20-dark-codex.css](core/styles/20-dark-codex.css) |
 | แผงตั้งค่า Native และระบบอัปเดตตัวเอง | [core/runtime/75-settings-ui.js](core/runtime/75-settings-ui.js), [core/styles/45-settings-ui.css](core/styles/45-settings-ui.css), [core/daemon/updater.mjs](core/daemon/updater.mjs) |
 | State Machine และแผงสถิติการใช้งาน | [core/runtime/40-status-machine.js](core/runtime/40-status-machine.js), [core/daemon/telemetry-renderer.mjs](core/daemon/telemetry-renderer.mjs), [core/styles/30-telemetry.css](core/styles/30-telemetry.css) |
-| ระบบคาดการณ์ข้อความและการ解析โมเดล | [core/daemon/prompt-suggest.mjs](core/daemon/prompt-suggest.mjs), [core/runtime/70-prompt-suggestions.js](core/runtime/70-prompt-suggestions.js) |
+| ระบบคาดการณ์ข้อความและการวิเคราะห์โมเดล | [core/daemon/prompt-suggest.mjs](core/daemon/prompt-suggest.mjs), [core/runtime/70-prompt-suggestions.js](core/runtime/70-prompt-suggestions.js) |
 | Dictionary และการจัดกลุ่มโมดูลสำหรับติดตั้งเฉพาะส่วน | [core/i18n.json](core/i18n.json), [core/runtime/60-i18n-engine.js](core/runtime/60-i18n-engine.js), [core/installer/features.mjs](core/installer/features.mjs) |
 
 หลังแก้ไขไฟล์ใน `core/` ให้รันคำสั่งต่อไปนี้เพื่อสร้าง Hash Manifest ใหม่ ตรวจสอบโค้ด รันทดสอบทั้งหมด และติดตั้งลงในเครื่อง:
